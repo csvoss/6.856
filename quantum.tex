@@ -1,0 +1,31 @@
+\section{Yao's Principle in Quantum Information}
+
+Another area where Yao's principle has found an application is in the study of quantum information, permitting proof of worst-case bounds for strategies in certain quantum information ``games''.
+
+Consider setting up a ``game'' between two players and an adversary, where the two players receive random input from the adversary and must each return specific outputs based on those inputs without communicating with each other. Analyzing the best strategies for these games, under the assumptions of both classical physics and quantum physics, can be used to demonstrate that better strategies exist if the players are permitted access to quantum information.
+
+An example of such a game is the CHSH (Clauser-Horne-Shimonyi-Holt) game:
+
+\begin{itemize}
+\item{The players may collude to set up a strategy beforehand, but may not communicate afterwards.}
+\item{The adversary chooses a random $\vec{x}=(x_1, x_2) \in X=\{(0,0), (0,1), (1,0), (1,1)\}$. The random choice is uniform, with $\frac14$ probability each.}
+\item{The players 1 and 2 receive the values $x_1$ and $x_2$, respectively.}
+\item{Using their strategy, the players 1 and 2 output the values $a_1$ and $a_2$, respectively.}
+\item{The players win if $a_1 \oplus a_2 = x_1 \wedge x_2$.
+\end{itemize}
+
+Both under classical physics and under any `local hidden variable theory' -- an attempt to explain quantum phenomena as being due to extra local hidden variables -- the best that the players can achieve is a win probability of 0.75. If the players are allowed to share entangled quantum bits, however, then 0.85... is the best win probability that the players can achieve. [[cite Clauser]] [[cite Ambainis]] The CHSH game was designed by its authors so as to be an actual realizable experiment, and experiments have since confirmed that the way the universe works is consistent with quantum entanglement, and not consistent with local hidden variable theories. [[cite Aspect]]
+
+In \emph{Worst Case Analysis of Non-local Games} by Ambainis et al., the authors generalize these results to games beyond the simple CHSH game, and analyze the worst-case performance of strategies in both classical and quantum physics.
+
+
+
+To-do: the following citations
+
+Ambainis, A., A. Ba\v{c}kurs, K. Balodis, A. \v{S}ku\v{s}kovniks, J. Smotrovs, M. Virza: Worst Case Analysis of Non-local Games. P. van Emde Boas et al. (Eds.): SOFSEM 2013, LNCS 7741, pp. 121-132, 2013. \url{http://arxiv.org/abs/1112.2856}
+
+Clauser, J., M. Horne, A. Shimony, R. Holt: Proposed experiment to test local
+hidden-variable theories. Physical Review Letters 23, 880 (1969). \url{http://journals.aps.org/prl/abstract/10.1103/PhysRevLett.23.880}
+
+Aspect, A., P. Grangier, G. Roger: Experimental Tests of Realistic Local Theories via Bell's Theorem. Physical Review Letters 47, 460 (1981). \url{http://journals.aps.org/prl/abstract/10.1103/PhysRevLett.47.460}.
+
