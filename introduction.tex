@@ -1,1 +1,58 @@
 \section{Introduction}
+
+We will begin with a reminder of the intuition behind Yao's minimax principle.
+
+\subsection{Statement of the principle}
+
+Yao's principle states that \emph{the best deterministic algorithm, when run on any distribution over random inputs, is at least as good as any randomized algorithm when run on the worst-case input}. In other words,
+
+$$\max_{x \in \mathcal{X}} \mathop{\mathds{E}}_{r \in R} cost(r, x) \geq \min_{r \in \mathcal{R}} \mathop{\mathds{E}}_{x \in X} cost(r, x)$$
+
+where \begin{align*}
+\mathcal{X} =&\; \text{the set of all possible inputs to the algorithm}
+\\
+\mathcal{R} =&\; \text{the set of all possible strings defining deterministic algorithms}
+\\
+X =&\; \text{any probability distribution over inputs to the algorithm}
+\\
+R =&\; \text{any probability distribution over strings defining deterministic algorithms}
+\\
+cost(r, x) =&\; \text{the cost (usually running time) of the algorithm running on input $x$,}
+          \\& \text{if the specific algorithm to use is defined by string $r$}
+\end{align*}
+
+\subsection{Proof of the principle}
+
+First, consider game theory. Each player $i$ has a set of moves $M_i$ that they may choose from. A two-player game is defined by a \emph{payoff matrix} of outcomes for each player, a function mapping $M_1 \times M_2 \rightarrow \mathds{R} \times \mathds{R}$.
+
+In a \emph{pure strategy}, player $i$ chooses exactly one move $m$ from $M_i$ to play. In a \emph{mixed strategy}, player $i$ instead chooses a probability distribution $\pi(m)$ of moves from $M_i$.
+
+\subsubsection{Proof of von Neumann's minimax theorem}
+
+TODO: lemma about pure/mixed strategies
+
+TODO: the minimax theorem
+
+TODO: lead this into the inequality
+
+TODO: replace the 'best's with 'any's
+
+TODO: conclude with the convenient pre-Yao inequality
+
+\subsubsection{von Neumann's minimax theorem $\longrightarrow$ Yao's minimax principle}
+
+TODO: discuss how we turn this statement about pure/mized strategies into a statement about algorithms and adversaries
+
+The following table summarizes each of the parts of Yao's principle, and their roles. As we demonstrate examples which utilize Yao's principle, this table will be used in order to clarify how the principle applies to each new situation.
+
+\begin{tabular}{r l}
+Randomized algorithm chooses: & some distribution $R$ over strings $r$ as its source of randomness
+\\
+Deterministic algorithm chooses: & some fixed string $r$
+\\
+Mixed-strategy adversary chooses: & some distribution $X$ over inputs $x$ for the algorithm
+\\
+Pure-strategy adversary chooses: & some fixed input $x$
+\\
+Adversary wants to maximize: & the running time of the algorithm, $cost(r,x)$
+\end{tabular}
