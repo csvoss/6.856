@@ -1,22 +1,22 @@
 \section{Removable Online Knapsack Problem}
-In this section, we give a 2-competitive randomized algorithm to the removable online knapsack problem as well as use Yao's Principle show $1+1/e$ is a lower bound on the competitiveness of any algorithm.
+In this section, we present the 2-competitive solution of Han et al. \cite{han} to the removable online knapsack problem as well as use Yao's Principle show $1+1/e$ is a lower bound on the competitiveness of any algorithm against an oblivious adversary.
 
-The knapsack problem asks: Given a set of items $e_i$ with weights $w_i$ and values $v_i$, select a subset with the maximum sum of values such that the sum of the weights is at most the capacity of the knapsack. The offline version is a classic NP-hard optimization problem, though it has a simple dynamic programming pseudo-polynomial solution. Here, we consider the \emph{online} version, meaning each item is given to the algorithm after the algorithm makes a decision on the previous item. \emph{Removable} means the knapsack is a working set, from which we can remove items and add new items, but not add previously removed items. At all times, the knapsack is limited by its capacity. The objective is to maximize the sum of the values of the items in the final knapsack.
+The knapsack problem asks: Given a set of items $e_i$ with weights $w_i$ and values $v_i$, select a subset with the maximum sum of values such that the sum of the weights is at most the capacity of the knapsack. We call this the value of the knapsack. The offline version is a classic NP-hard optimization problem, though it has a simple dynamic programming pseudo-polynomial solution. Here, we consider the \emph{online} version, meaning each item is given to the algorithm after the algorithm makes a decision on the previous item. \emph{Removable} means the knapsack is a working set, from which we can remove items and add new items, but not add previously removed items. At all times, the knapsack is limited by its capacity. The objective is to maximize the value of the final knapsack. We say an algorithm is $c$-competitive if the expected value of the final knapsack is at least $\frac{1}{c}$ times the expected value of the optimal knapsack.
 
-We assume a capacity of 1. This is valid because only weights relative to the knapsack's capacity matters for the capacity constraint, so we can always scale down to a unit capacity.
+We assume the knapsack has capacity 1. This is valid because only weights relative to the knapsack's capacity matters for the capacity constraint, so we can always scale down to a unit capacity.
 
 \subsection{Upper Bound} % Probably will shorten this subsection
-To prove an upper bound, we present a 2-competitive randomized algorithm.
+To prove an upper bound on the competitiveness of algorithms which yield a solution to the problem, we present a 2-competitive randomized algorithm.
 
 Since the online nature of the problem is what makes it impossible to always achieve the optimal solution, it is insightful to first consider algorithms which behave similarly in both online and offline situations. We look at $MAX$ and $GREEDY$.
 
 $MAX$ simply selects the item with the largest value whose weight does not exceed 1. Since in the offline case, we can process each item in an arbitrary order and keep track of the best item so far, in the online case, we can do exactly the same with the order given to us, storing the best item so far in our knapsack.
 
-$GREEDY$ selects the $k$ items with the highest ratios of value to weight $v_i/w_i$, maximizing $k$ while keeping the sum of the weights of the selected items at most 1. In the offline case, this can be done trivially by sorting the items by ratio and then selecting the highest $k$ items. An online algorithm can perform at least as well by keeping a working set of the items with the highest ratio while processing each input.
+$GREEDY$ selects the $k$ items with the highest ratios of value to weight $\frac{v_i}{w_i}$, maximizing $k$ while keeping the sum of the weights of the selected items at most 1. In the offline case, this can be done trivially by sorting the items by ratio and then selecting the highest $k$ items. An online algorithm can perform at least as well by keeping a working set of the items with the highest ratio while processing each input.
 %We demonstrate that a set at least as good is found in the online case by the following algorithm.
 
 \begin{algorithm}
-	\caption{GREEDY}
+	\caption{online $GREEDY$}
 	$S \leftarrow \emptyset$\;
 	\ForEach{item $e_i$, in order of arrival}{
 		\If{$w_i\le1$}{
@@ -31,14 +31,16 @@ $GREEDY$ selects the $k$ items with the highest ratios of value to weight $v_i/w
 %We claim every item selected in the offline $GREEDY$ algorithm is selected in the online $GREEDY$ algorithm. Consider the $k$ items the offline algorithm selected. Each
 Since when the sum of the weights in $S$ is greater than 1, an item with ratio less than that of the $k$ items with the largest ratios must be in $S$, the $k$ items will never be removed. Thus $S$ is a superset of the items the offline $GREEDY$ algorithm selects.
 
-Neither of these algorithms alone are competitive. Consider an input sequence $\{(w_i,v_i)\}$ of $\{(\epsilon,2\epsilon),\ (\epsilon,\epsilon),\ (\epsilon,\epsilon),\ \ldots\}$ on the $MAX$ algorithm and $\{(\epsilon, 2\epsilon),\ (1,1)\}$ on the $GREEDY$ algorithm. In fact, no deterministic online algorithm is competitive \cite{iwama}. However, using both with randomness can yield a competitive algorithm.
+Neither of these algorithms alone are competitive. Consider an input sequence $\{(w_i,v_i)\}$ of $\{(\epsilon,2\epsilon),\ (\epsilon,\epsilon),\ (\epsilon,\epsilon),\ \ldots\}$ on the $MAX$ algorithm and $\{(\epsilon, 2\epsilon),\ (1,1)\}$ on the $GREEDY$ algorithm. In fact, no deterministic online algorithm is competitive with a constant factor \cite{iwama}. However, using both with randomness can yield a competitive algorithm.
 
 \begin{theorem}
 	\emph{\cite{han}}
 	Running $MAX$ and $GREEDY$ uniformly at random is a 2-competitive algorithm.
 \end{theorem}
 \begin{proof}
-	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by $GREEDY$, $MAX$, and an optimal solution, respectively. Consider the fractional knapsack solution to the offline version, that is, when we are allowed to take fractional parts of items. Then a greedy solution is optimal: Sort by ratio and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. In the fractional knapsack problem, we have relaxed the integrality constraint, so the fractional solution is not worse than the integral solution. Now the offline $GREEDY$ algorithm by definition selects all of these except the fractional item (if one exists). Thus the online $GREEDY$ algorithm also selects all except the fractional item. Finally the $MAX$ algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is $\frac{2\cdot OPT(T)}{GREEDY(T)+OPT(T)} \le 2$.
+	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by $GREEDY$, $MAX$, and an optimal solution, respectively. Consider the fractional knapsack solution to the offline version, that is, when we are allowed to take fractional parts of items. Then a greedy solution is optimal: Sort by ratio and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. In the fractional knapsack problem, we have relaxed the integrality constraint, so the fractional solution is not worse than the integral solution.
+	
+	Now the offline $GREEDY$ algorithm by definition selects all of these except the fractional item (if one exists). Thus the online $GREEDY$ algorithm also selects all except the fractional item. Finally the $MAX$ algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is $\frac{2\cdot OPT(T)}{GREEDY(T)+MAX(T)} \le 2$.
 \end{proof}
 
 \subsection{Lower Bound}
@@ -48,11 +50,11 @@ To do so, we must find a distribution of inputs for which no deterministic algor
 
 Let the probability of $k+1$ items be $p_k$. For simplicity in analysis, we will let the first item $e_0=(w_0,v_0)=(1,1)$ with future items having much smaller weights and values but a higher ratio so that the problem is essentially reduced to determining when to remove the first item from the knapsack.
 
-This is reminiscent of the \emph{ski rental problem}, one of the most well-understood online problems \cite{karlin}, where a client must choose whether and when to buy skis for a fixed cost versus paying a smaller cost each day. Our knapsack problem is the reverse of this: instead of deciding when to switch from renting skis to buying skis to minimize total cost, we are deciding when to switch from having a single large item in our knapsack to getting a stream of smaller items with a better ratio.
+This is reminiscent of the \emph{ski rental problem}, one of the most well-understood online problems \cite{karlin}, where a client must choose whether and when to buy skis for a fixed cost versus paying a smaller cost each day. Our knapsack problem is the reverse of this: instead of deciding when to switch from renting skis to buying skis to minimize total cost, we are deciding when to switch from having a single large item in our knapsack to getting a stream of smaller items with a better ratio to maximize total value.
 
 Finally, we want the expected value of removing $e_0$ and selecting all following items to be close to 1 at any given point. A simple way to achieve this is to let the remaining items have a constant value and have the $p_k$ form an exponential distribution.
 
-This leads us to the input sequence given by Han et al. \cite{han}:
+This leads us towards the input sequence given by Han et al. \cite{han}:
 \[(1,1),\ (1/n^2,1/n),\ (1/n^2,1/n),\ldots\ (1/n^2,1/n)\]
 for a given value of $n$ and where there are $k+1$ items with probability $p_k = \frac{1-e^{-1/n}}{1-e^{-n}} \cdot e^{-(k-1)/n}$ for $k=1,2,\ldots,n^2$.
 
@@ -73,4 +75,6 @@ Thus any online algorithm has competitive ratio at least $1+1/e$.
 \end{proof}
 
 \subsection{Remarks}
+Yao's Principle is used here to give a lower bound on the competitiveness of algorithms for the removable online knapsack problem, which is an upper bound on their effectiveness. It can be used to show the tightness of a particular solution.
 
+Also, as we saw here, there is a dual between using an algorithm to demonstrate a lower bound on the solvability of a problem (alternatively, an upper bound on the hardness of a problem), and using a series of inputs to demonstrate an upper bound on the solvability of a problem (alternatively, an lower bound on the hardness). As more work is done on a particular problem, the gap between the two shrink until a provably optimal algorithm is found.
