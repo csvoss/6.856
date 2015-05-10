@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage[margin=1.25in]{geometry}
+\usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb, amsthm, amsfonts}
 \usepackage{mathdots}
 \usepackage{array}
@@ -24,7 +24,7 @@
 \usepackage{tikz-qtree}
 \usepackage{forest}
 \usepackage{xstring}
-\usepackage[boxruled,vlined,linesnumbered,commentsnumbered]{algorithm2e}
+\usepackage[ruled,noline,noend]{algorithm2e}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{adjustbox}
@@ -36,6 +36,8 @@
 \usepackage{verbatim}
 \usepackage{pgfplots}
 \usepackage{forloop}
+
+\newtheorem{theorem}{Theorem}
 
 \title{A Survey of Yao's Minimax Principle} % can be changed to whatever
 \author{Brian Shimanuki \footnote{bshimanuki@mit.edu} \\
@@ -50,6 +52,7 @@ Chelsea Voss \footnote{csvoss@mit.edu}}
 \input{introduction}
 % Add more for other sections
 
+\input{knapsack}
 \input{quantum}
 
 \input{conclusion}
