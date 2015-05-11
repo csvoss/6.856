@@ -35,6 +35,7 @@ Yao's minimax principle proves that the expected competitive ratio on an optimal
 
 To define such a set of inputs, essentially, we need to find a set of intervals that satisfy the condition that any deterministic algorithm is at most $\frac{3}{2}$-competitive. The idea behind constructing such a set of intervals is that any deterministic algorithm will make the same decision on any specific interval given the same information, regardless of what the future intervals are.
 
+\subsubsection{Problem Construction}
 The intervals defined by Zarrabi-Zadeh are: 
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8}]
 For $k \geq 1$:
@@ -44,11 +45,13 @@ For $k \geq 1$:
         $c_i$ = [3$i$+2, $\infty$]
 \end{Verbatim}
 We can then define a block as:
-$B_i = \begin{cases} [b_1, c_1] &\mbox{if } i \equiv 1 \\
-[a_i, b_i, c_i] & \mbox{if } i \in [2,k] \\
- [a_k, b_k] &\mbox{if } i \equiv k \end{cases}$ 
+$B_i = \begin{cases} {b_1, c_1} &\mbox{if } i \equiv 1 \\
+{a_i, b_i, c_i} & \mbox{if } i \in [2,k] \\
+ {a_k, b_k} &\mbox{if } i \equiv k \end{cases}$ 
 
-From this set of blocks, we can choose a set of $k$ input sequences, simply by defining our input sequence $X_i$ as the concatenation of blocks $B_1$, $B_2$... $B_i$, in order.
+From this set of blocks, we can choose a set of $k$ input sequences, simply by defining our input sequence $X_i$ as the concatenation of blocks $B_1$, $B_2$... $B_i$, in order. Our set of all possible inputs then becomes the set: 
+
+$I =$ \{$X_i$ where $i \in [1,k]$\}
 
 It can be shown that the minimum number of colors required to color $X_i$ without any edges sharing a color is $i$.
 
@@ -67,31 +70,55 @@ This sum becomes:
 \rho = \frac{3}{2} - \frac{1}{2(2^k-1)}
 \end{equation*}
 
-where $\rho$ is the best competitive ratio that can be obtained by using First-Fit on this probability distribution. If it can be shown that no other deterministic algorithm can obtain a better competitive ratio on this set of inputs, then this is the best that a randomized algorithm could achieve.
+where $\rho$ is the best competitive ratio that can be obtained by using First-Fit on this probability distribution. 
 
-To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$ where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$ since they don't intersect, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  Given a sequence of decisions, <$d_1, d_2...d_{k-1}$>, then we can define a deterministic algorithm FF as follows:
+If no deterministic algorithm can obtain a better competitive ratio on this set of inputs, then this is the best that a randomized algorithm could achieve.
+\subsubsection{Deterministic Algorithm Bounds}
+\begin{theorem}
+No deterministic algorithm can obtain a better competitive ratio on the set of inputs $I$
+\end{theorem}
+\begin{proof}
+To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$ where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$ since they don't intersect, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  
+
+Given a sequence of decisions, <$d_1, d_2...d_{k-1}$>, then we can define a deterministic algorithm FF as follows:
 
 If we receive an interval $c_j$, we check what $d_j$ is and assign a new color iff $d_j = 1$. Else, we assign it the same color as $b_j$. 
 
 If we receive an interval of type $a$ or $b$, we behave as the online First-Fit algorithm normally does.
 
-Looking at all deterministic algorithms over this sequence of decisions, FF uses the minimum number of colors on any input sequence $X_i$, which  can be simply proved.  Given that this holds, all that remains is to show the competitive ratio of FF is $\rho$.  This proof follows by induction:
+\begin{lemma} Among all deterministic online algorithms, FF behaves optimally and chooses the minimum number of colors for any input $I$. \end{lemma}
+\begin{proof}
+This can be shown by induction, over the minimum number of colors on an input of size $m$. 
+%%Then, assuming that the minimum number of colors are used in an input of size $m$, then we know that all deterministic algorithms will behave the same way for a specific prefix of size $m$. We can then show that the minimum number of colors will be used on an input of size $m+1$ and the statement holds.
+\end{proof}
 
-Define P(m) as an upper bound for the competitive ratio of FF where there are $m$ 1's in our sequence of decisions $D$.  P(0) holds trivially - in a sequence of all zero's, FF behaves exactly the same as First-Fit and our competitive ratio is still ~2.
+\begin{lemma} The competitive ratio of FF is $\rho$ \end{lemma}
+\begin{proof}
+This proof follows by induction:
 
-Using strong induction, we assume that P(k) is true for all $k \in [0,m-1]$.  Then, $i$ is defined as the index of the last bit which is 1 in $D_m$, an arbitrary sequence with $m$ 1's.  If we flip $D_m[i]$, we get a sequence $D_{m-1}$ with a competitive ratio at most $\rho$ (by induction).
+Define $P(m)$ as an upper bound for the competitive ratio of FF where there are $m$ 1's in our sequence of decisions $D$.  $P(0)$ holds trivially - in a sequence of all zero's, FF behaves exactly the same as First-Fit and our competitive ratio is still ~2.
 
-Thus, for the first $i$ bits, the competitive ratio of $FF_m$ is the same as that of $FF_{m-1}$ for all sequences smaller than $X_i$. 
+Using strong induction, we assume that P(k) is true for all $k \in [0,m-1]$.  
 
-On sequence $X_i$, $FF_m$ uses one more color than $FF_{m-1}$, since it uses a new color for $c_i$.
+%Then, $i$ is defined as the index of the last bit which is 1 in $D_m$, an arbitrary sequence with $m$ 1's.  If we flip $D_m[i]$, we get a sequence $D_{m-1}$ with a competitive ratio at most $\rho$ (by induction).
 
-On sequences larger than $X_i$, $FF_m$ uses one less color than $FF_{m-1}$. This is because it opens a new color for $c_i$. However, $FF_m$ colors $a_{i+1}$ like $b_i$ and $b_{i+1}$ like $c_i$. Meanwhile $FF_{m-1}$ opens new colors for $a_{i+1}$ and $b_{i+1}$ since that's what First-Fit does. 
+%Thus, for the first $i$ bits, the competitive ratio of $FF_m$ is the same as that of $FF_{m-1}$ for all sequences smaller than $X_i$. 
 
-Hence:
+%On sequence $X_i$, $FF_m$ uses one more color than $FF_{m-1}$, since it uses a new color for $c_i$.
+
+%On sequences larger than $X_i$, $FF_m$ uses one less color than $FF_{m-1}$. This is because it opens a new color for $c_i$. However, $FF_m$ colors $a_{i+1}$ like $b_i$ and $b_{i+1}$ like $c_i$. Meanwhile $FF_{m-1}$ opens new colors for $a_{i+1}$ and $b_{i+1}$ since that's what First-Fit does. 
+
+By looking at the bits where $FF_m$ would differ from $FF_{m-1}$, we can derive the formula that:
 
 \[\rho_m = \rho_{m-1} + \rho_i(\frac{1}{i}) - \sum_{j=i+1}^k \rho_i(\frac{1}{i})\]
 
-Substituting $\rho_i = \frac{2^k}{2^k-1}*\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$ and the proof follows by induction.  In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$. By choosing $k$ arbitrarily large, $\rho$ tends to $\frac{3}{2}$. 
+Substituting $\rho_i = \frac{2^k}{2^k-1}*\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$ and the proof follows by induction.
+\end{proof}
+
+In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$, which shows that no deterministic algorithm has a better competitive ratio on $I$. 
+\end{proof}
+
+By choosing $k$ arbitrarily large, $\rho$ tends to $\frac{3}{2}$. 
 
 Yao's Principle then gives us a lower bound of $\frac{3}{2}$ as the competitive ratio on any randomized algorithm.
 %\subsection{Remarks}
