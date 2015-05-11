@@ -1,5 +1,5 @@
 \section{Online Coloring Co-Interval Graphs}
-This section studies the online problem of coloring co-interval graphs. 
+This section studies the online problem of coloring co-interval graphs as described by Zarrabi-Zadeh \cite{zarrabi}.
 This problem is set up as follows:
 
 \begin{description}
@@ -27,7 +27,7 @@ for a new vertex v:
 \end{verbatim}
 Essentially, the algorithm maintains a list of colors that can be used. These colors are sorted in an arbitrary order. The first vertex is simply assigned the smallest color. For any future vertex $v$, the algorithm scans the list. We can define a collision between vertices $u$ and $v$ at color $k$ if $u$ is colored $k$ and $v$ is connected to $u$ by an edge in $E$. If a collision occurs where $L[i] = k$, then we increment $i$. We assign $v$ the color at $L[j]$ where $j$ doesn't cause any collisions and try to minimize $j$.
 
-It has been shown by Gyarfas and Lehel that First-Fit uses at most $2\omega+1$ colors on any co-chordal graph, which is a class that includes co-interval graphs. It has also been shown by Kierstead and Qin that no online deterministic algorithm can beat the 2-competitive ratio on co-interval graphs.
+It has been shown by Gyarfas and Lehel \cite{gyarfas} that First-Fit uses at most $2\omega+1$ colors on any co-chordal graph, which is a class that includes co-interval graphs. It has also been shown by Kierstead and Qin \cite{kierstead} that no online deterministic algorithm can beat the 2-competitive ratio on co-interval graphs.
 
 In the next section, we look at using randomization in co-interval graphs and lower bound the best competitive ratio that can be obtained.
 \subsection{Lower Bound}
@@ -37,11 +37,11 @@ To define such a set of inputs, essentially, we need to find a set of intervals 
 
 The intervals defined by Zarrabi-Zadeh are: 
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8}]
-For k $\geq$ 1:
+For $k \geq 1$:
     For all 1 $\leq i \leq k$:
         $a_i$ = [3$i$-3, 3$i$-2]
         $b_i$ = [3$i$+1, 3$i$+2]
-        $c_i$ = [3$i$+2, +$\infty$]
+        $c_i$ = [3$i$+2, $\infty$]
 \end{Verbatim}
 We can then define a block as:
 $B_i = \begin{cases} [b_1, c_1] &\mbox{if } i \equiv 1 \\
