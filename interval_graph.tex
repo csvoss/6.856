@@ -94,7 +94,7 @@ Hence:
 Substituting $\rho_i = \frac{2^k}{2^k-1}*\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$ and the proof follows by induction.  In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$. By choosing $k$ arbitrarily large, $\rho$ tends to $\frac{3}{2}$. 
 
 Yao's Principle then gives us a lower bound of $\frac{3}{2}$ as the competitive ratio on any randomized algorithm.
-\subsection{Remarks}
-This is an especially interesting application of Yao's principle because in unit co-interval graphs, randomization can prove a definite improvement in the competitive ratio. That is, it is still unknown whether there exists a deterministic algorithm that is better than 2-competitive in the case of unit co-interval graphs. However, using randomization, we can obtain a $3/2$ competitive ratio.
+%\subsection{Remarks}
+%This is an especially interesting application of Yao's principle because in unit co-interval graphs, randomization can prove a definite improvement in the competitive ratio. That is, it is still unknown whether there exists a deterministic algorithm that is better than 2-competitive in the case of unit co-interval graphs. However, using randomization, we can obtain a $3/2$ competitive ratio.
 
-Similarly, it is unknown whether we can actually extend the $3/2$ competitive ratio to general co-interval graphs. However, Yao's principle shows us that if this ratio is obtained, it must be tight, without ever analyzing the effects of randomization on the problem itself and just looking at how different deterministic algorithms behave.
+%Similarly, it is unknown whether we can actually extend the $3/2$ competitive ratio to general co-interval graphs. However, Yao's principle shows us that if this ratio is obtained, it must be tight, without ever analyzing the effects of randomization on the problem itself and just looking at how different deterministic algorithms behave.
