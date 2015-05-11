@@ -1,11 +1,11 @@
 \section{Yao's Principle in Quantum Information}
 
-Yao's principle isn't just used for proving worst-case bounds on the running time of algorithms. Another area where Yao's principle has found an application is in the study of quantum information, permitting proof of worst-case bounds for strategies in certain quantum information ``games''. In this section, we will examine how Yao's minimax principle may be used for this purpose, as demonstrated in \emph{Worst Case Analysis of Non-local Games} by Ambainis et al.
+Yao's principle isn't just used for proving worst-case bounds on the running time of algorithms. Another area where Yao's principle has found an application is in the study of certain games in quantum information, permitting proof of worst-case bounds for strategies in these games. In this section, we will examine how Yao's minimax principle may be used for this purpose, as demonstrated in \emph{Worst Case Analysis of Non-local Games} by Ambainis et al.
 
 
 \subsection{Quantum Preliminaries}
 
-Consider setting up a ``game'' between two players and an adversary, where the two players receive random input from the adversary and must each return specific outputs based on those inputs without communicating with each other. Analyzing the best strategies for these games, under the assumptions of both classical physics and quantum physics, can be used to demonstrate that better strategies exist if the players are permitted access to quantum information.
+Consider setting up a game between two players and an adversary, where the two players receive random input from the adversary and must each return specific outputs based on those inputs without communicating with each other. Analyzing the best strategies for these games, under the assumptions of both classical physics and quantum physics, has been used to demonstrate that better strategies exist if the players are permitted access to quantum information.
 
 An example of such a game is the CHSH (Clauser-Horne-Shimonyi-Holt) game:
 
@@ -14,16 +14,15 @@ An example of such a game is the CHSH (Clauser-Horne-Shimonyi-Holt) game:
 \item{The adversary chooses a random $\vec{x}=(x_1, x_2) \in X=\{(0,0), (0,1), (1,0), (1,1)\}$. The random choice is uniform, with $\frac14$ probability each.}
 \item{The players 1 and 2 receive the values $x_1$ and $x_2$, respectively.}
 \item{In the quantum setting, the players 1 and 2 may also possess an entangled 2-part quantum state $\ket{\psi}$, which they may measure.}
-\item{Using their strategy, the players 1 and 2 output the values $a_1$ and $a_2$, respectively.}
+\item{Using their strategy, the players 1 and 2 output the values $a_1(x_1)$ and $a_2(x_2)$, respectively.}
 \item{The players win if $a_1 \oplus a_2 = x_1 \wedge x_2$.}
 \end{itemize}
 
-Both under classical physics and under any ``local hidden variable theory'' -- explanation of quantum phenomena as being due to extra local hidden variables -- the best that the players can achieve is a win probability of 0.75. If the players are allowed to share entangled quantum bits, however, then they can win more often: $\frac12 + \frac1{2\sqrt(2)} = 0.8535$... becomes the best win probability that the players can achieve. [[cite Clauser]] [[cite Ambainis 2013]]
+Both under classical physics and under any ``local hidden variable theory'' -- explanation of quantum phenomena as being due to extra local hidden variables -- the best that the players can achieve is a win probability of 0.75. If the players are allowed to share entangled quantum bits, however, then they can win more often: $\frac12 + \frac1{2\sqrt2} = 0.8535$... becomes the best win probability that the players can achieve. [[cite Clauser]] [[cite Ambainis 2013]]
 
 The CHSH game was designed so as to be an actual realizable experiment, and experiments have since confirmed that the way the universe works is consistent with quantum entanglement, and not consistent with local hidden variable theories. [[cite Aspect]]
 
 In \emph{Worst Case Analysis of Non-local Games} by Ambainis et al., the authors examine generalized games beyond the simple CHSH game, and analyze the worst-case performance of strategies in both classical and quantum physics. [[cite Ambainis 2013]]
-
 
 \subsection{Generalized CHSH}
 
@@ -34,20 +33,25 @@ The CHSH game is played between two players and an adversary; one simple general
 \item{The adversary chooses a random $\vec{x}=(x_1, ..., x_n) \in X_1 \times ... \times X_n$, for some $X_1, ..., X_n$. The random choice is governed by a probability distribution $\pi$; each $\vec{x}$ is chosen with probability $\pi(\vec{x})$.}
 \item{The players $1, ..., n$ receive the values $x_1, ..., x_n$, respectively.}
 \item{In the quantum setting, the players may also possess an entangled $n$-part quantum state $\ket{\psi}$, which they may measure.}
-\item{Using their strategy, the players $1, ..., n$ output the values $\vec{a} = a_1, ..., a_n$, respectively.}
-\item{The players win if $\bigoplus \vec{a} = \bigwedge \vec{x}$.}
+\item{Using their strategy, the players $1, ..., n$ output the values $\vec{a} = a_1(x_1), ..., a_n(x_n)$, respectively.}
+\item{The players win if $\bigoplus \vec{a} = \bigwedge \vec{x}$. Let the indicator variable $\texttt{win}(\vec{a}|\vec{x}) = 1$ if they win, $-1$ otherwise.}
 \end{itemize}
 
-The authors note that this game has not been studied before because of its triviality in the classical setting: by outputting $a_i=0$, the players are guaranteed to win unless all $x_i=1$. Against an adversary that chooses $\vec{x}$ uniformly, the players can win with probability $1-2^n$.
+The authors note that this game has not been studied before because of the simplicity of its strategies in the classical setting: by outputting $a_i=0$, the players are guaranteed to win unless the adversary happened to pick $x_i=1$. Therefore, against an adversary that always chooses $\vec{x}$ uniformly, the players can win with probability $1-2^n$.
 
-However, this game becomes more interesting when we consider worst-case bounds: if the adversary is allowed to choose $\pi$, the optimal strategy for the players becomes less trivial.
+%% However, this game becomes more interesting when we consider worst-case bounds: if the adversary is allowed to choose $\pi$, the optimal strategy for the players becomes less trivial. The authors show that $\lim_{n \rightarrow \infty}Pr(win) = 2/3$ in both the classical case and the quantum case. 
 
-The authors show that $\lim_{n \rightarrow \infty}Pr(win) = 2/3$ in both the classical case and the quantum case. 
+%% TODO: transition here
 
-[[cite Ambainis 2010]]
+%% \textbf{Theorem:} TODO
 
+%% \begin{proof}
+%% In previous results [[cite Ambainis 2010]], the authors demonstrate that the value of [...TODO].
+%% \end{proof}
 
 \subsection{Fully Generalized Games}
+
+The n-party AND game is similar to the CHSH game because of its win condition: $\bigoplus \vec{a} = \bigwedge \vec{x}$. We can generalize this game further still by permitting arbitrary win conditions.
 
 \begin{itemize}
 \item{The $n$ players may collude to set up a strategy beforehand, but may not communicate afterwards.}
@@ -55,13 +59,32 @@ The authors show that $\lim_{n \rightarrow \infty}Pr(win) = 2/3$ in both the cla
 \item{The players $1, ..., n$ receive the values $x_1, ..., x_n$, respectively.}
 \item{In the quantum setting, the players may also possess an entangled $n$-part quantum state $\ket{\psi}$, which they may measure.}
 \item{Using their strategy, the players $1, ..., n$ output the values $\vec{a} = a_1, ..., a_n$, respectively.}
-\item{The players win if some proposition $Win(\vec{a} | \vec{x})$ is true.}
+\item{The players win if some proposition $\texttt{win}(\vec{a} | \vec{x})$ is true. Let the indicator variable $\texttt{win}(\vec{a}|\vec{x}) = 1$ if they win, $-1$ otherwise.}
 \end{itemize}
 
+For any game $G$, let $\omega^\pi(G) \equiv Pr(Win) - Pr(Lose)$ when $\pi$ is a probability distribution according to which the adversary chooses $\vec{x}$. Let $\omega(G)$ be the worst case of $\omega^\pi(G)$: the minimum value of $\omega^\pi(G)$ that the adversary can achieve by selectively choosing $\pi$. Let $\omega_q$ and $\omega_c$ be $\omega$ in the quantum and classical cases, respectively. We defined the indicator variable $\texttt{win}(\vec{a}|\vec{x})$ such that $Pr(Win) - Pr(Lose) = \Expected \texttt{win}(\vec{a}|\vec{x})$. Therefore, we can more formally define $\omega(G)$ and $\omega^\pi(G)$ as follows:
 
+$$\omega^\pi(G) \equiv \max_{\vec{a}} \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}|\vec{x})$$
 
+$$\omega(G) \equiv \max_{\vec{a}} \min_\pi \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}|\vec{x})$$
 
-To-do: the following citations
+One research pursuit in quantum information has been finding games that show the greatest possible separation between the quantum strategy and the classical strategy: seeking to maximize the ratio $\frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$. [[cite Ambainis 2013]] Interestingly, no matter what the proposition $\texttt{win}$ is, the separation ratio $\frac{\omega_q(G)}{\omega_c(G)}$, in the case where the adversary chooses the worst possible distribution $\pi$ \emph{separately} for \emph{each} of the classical case and the quantum case, is never bigger than the maximum value of $\frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$ for a fixed probability distribution $\pi$. This proof uses Yao's minimax principle.
+
+\textbf{Theorem:} $\frac{\omega_q(G)}{\omega_c(G)} \leq \max_\pi \frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$.
+
+\begin{proof}
+
+As with more familiar applications of Yao's minimax principle, here the adversary is still choosing a strategy over a distribution of inputs $\vec{x}$ to pass to the players, and the players may still use randomized algorithms as strategies. However, instead of using \emph{running time} as the cost which the adversary attempts to maximize and the algorithm attempts to minimize, we have \emph{probability of winning} as the cost which the adversary attempts to minimize and the two players' algorithms attempt to maximize. 
+
+Recall Yao's minimax principle: Instead of \emph{the best deterministic algorithm, when run on any (or the worst) distribution over random inputs, is at least as good as any (or the best) randomized algorithm when run on the worst-case input}, we will have that \emph{the players' best deterministic algorithms, when run the worst distribution $\pi$ over random inputs from the adversary, is at least as good as the best randomized algorithm when run on the worst-case input}. 
+
+The players' best deterministic algorithm against any the worst distribution $\pi$ over random inputs from the adversary is $\max_{\vec{a}} \min_{\pi} \Expected_{\vec{x} \in pi} \texttt{win}(\vec{a}|\vec{x})$, which is defined to be $\omega_c(G)$. The players' best randomized algorithm against the worst input is $\min_\pi \max_{\vec{a}} \Expected_{\vec{x} \in pi} \texttt{win}(\vec{a}|\vec{x})$, which is $\min_\pi \omega^\pi_c(G)$.
+
+This gives us a bound on the worst-case win probability under classical conditions: $\omega_c(G) \geq \min_{\pi} \omega_c^\pi(G)$. Suppose $\pi$ is the probability distribution that achieves this minimum; then $\omega_q^\pi(G) \geq \omega_q(G)$, because fixing $\pi$ can only allow the players to achieve a better win probability than their worst-case $\omega_q(G)$.
+
+\end{proof}
+
+TODO: the following citations
 
 Ambainis, A., A. Ba\v{c}kurs, K. Balodis, A. \v{S}ku\v{s}kovniks, J. Smotrovs, M. Virza: Worst Case Analysis of Non-local Games. P. van Emde Boas et al. (Eds.): SOFSEM 2013, LNCS 7741, pp. 121-132, 2013. \url{http://arxiv.org/abs/1112.2856}
 

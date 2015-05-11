@@ -10,7 +10,7 @@ We will begin with a reminder of the intuition behind Yao's minimax principle.
 
 Yao's principle states that \emph{the best deterministic algorithm, when run on any distribution over random inputs, is at least as good as any randomized algorithm when run on the worst-case input}. In other words,
 
-$$\max_{x \in \mathcal{X}} \Expected_{r \in R} texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} texttt{cost}(r, x)$$
+$$\max_{x \in \mathcal{X}} \Expected_{r \in R} \texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} \texttt{cost}(r, x)$$
 
 where \begin{align*}
 \mathcal{X} =&\; \text{the set of all possible inputs to the algorithm.}
@@ -21,7 +21,7 @@ X =&\; \text{any probability distribution over inputs to the algorithm.}
 \\
 R =&\; \text{any probability distribution over strings defining deterministic algorithms.}
 \\
-texttt{cost}(r, x) =&\; \text{the cost (usually running time) of the algorithm running on input $x$,}
+\texttt{cost}(r, x) =&\; \text{the cost (usually running time) of the algorithm running on input $x$,}
           \\& \text{if the specific algorithm to use is defined by string $r$.}
 \end{align*}
 
@@ -45,23 +45,25 @@ Each component move $x_i$ of $\pi_1$ contributes a component $\pi_1(x_i) \texttt
 
 TODO: something about how this leads to the below
 
-$$\max_{b \in \mathcal{b}} \Expected_{a \in A} payoff(a, b) \leq \min_{a \in \mathcal{A}} \Expected_{b \in B} payoff(a, b)$$
+$$\max_{b \in \mathcal{b}} \Expected_{a \in A} \texttt{payoff}_1(a, b) \leq \min_{a \in \mathcal{A}} \Expected_{b \in B} \texttt{payoff}_1(a, b)$$
 
 where \begin{align*}
 \mathcal{A} =&\; \text{set of moves available to player 1.}
 \\
 \mathcal{B} =&\; \text{set of moves available to player 2.}
 \\
-A =&\; \text{any probability distribution over moves to player 1 -- that is, any mixed strategy for player 1.}
+A =&\; \text{any probability distribution over moves to player 1}
+    \\&\text{-- that is, any mixed strategy for player 1.}
 \\
-B =&\; \text{any probability distribution over moves to player 2 -- that is, any mixed strategy for player 2.}
+B =&\; \text{any probability distribution over moves to player 2}
+    \\&\text{ -- that is, any mixed strategy for player 2.}
 \\
-\texttt{payoff}(a, b) =&\; \text{the payoff to player 1}
+\texttt{payoff}_1(a, b) =&\; \text{the payoff to player 1}
 \end{align*}
 
 Given this inequality, we need only observe the following correspondence between algorithms and strategies and between inputs and strategies in order to yield Yao's principle.
 
-$$\max_{x \in \mathcal{X}} \Expected_{r \in R} texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} texttt{cost}(r, x)$$
+$$\max_{x \in \mathcal{X}} \Expected_{r \in R} \texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} \texttt{cost}(r, x)$$
 
 \begin{itemize}
 
@@ -74,16 +76,16 @@ $$\max_{x \in \mathcal{X}} \Expected_{r \in R} texttt{cost}(r, x) \geq \min_{r \
 \end{itemize}
 
 
-The following table summarizes each of the parts of Yao's principle, and their roles. As we demonstrate examples which utilize Yao's principle, this table will be used in order to clarify how the principle applies to each new situation.
+%% The following table summarizes each of the parts of Yao's principle, and their roles. As we demonstrate examples which utilize Yao's principle, this table will be used in order to clarify how the principle applies to each new situation.
 
-\begin{tabular}{r l} %% We can definitely change this table. This is just a first draft.
-Randomized algorithm chooses: & some distribution $R$ over strings $r$ as its source of randomness
-\\
-Deterministic algorithm chooses: & some fixed string $r$
-\\
-Mixed-strategy adversary chooses: & some distribution $X$ over inputs $x$ for the algorithm
-\\
-Pure-strategy adversary chooses: & some fixed input $x$
-\\
-Adversary wants to maximize: & the running time of the algorithm, $texttt{cost}(r,x)$
-\end{tabular}
+%% \begin{tabular}{r l} %% We can definitely change this table. This is just a first draft.
+%% Randomized algorithm chooses: & some distribution $R$ over strings $r$ as its source of randomness
+%% \\
+%% Deterministic algorithm chooses: & some fixed string $r$
+%% \\
+%% Mixed-strategy adversary chooses: & some distribution $X$ over inputs $x$ for the algorithm
+%% \\
+%% Pure-strategy adversary chooses: & some fixed input $x$
+%% \\
+%% Adversary wants to maximize: & the running time of the algorithm, $\texttt{cost}(r,x)$
+%% \end{tabular}
