@@ -28,16 +28,16 @@ In \emph{Worst Case Analysis of Non-local Games} by Ambainis et al., the authors
 
 The CHSH game is played between two players and an adversary; one simple generalization that can be made is to extend the game from two players to $n$ players. Ambainis et al.~call this the \emph{n-party AND game}.
 
-\begin{itemize}
-\item{The $n$ players may collude to set up a strategy beforehand, but may not communicate afterwards.}
-\item{The adversary chooses a random $\vec{x}=(x_1, ..., x_n) \in X_1 \times ... \times X_n$, for some $X_1, ..., X_n$. The random choice is governed by a probability distribution $\pi$; each $\vec{x}$ is chosen with probability $\pi(\vec{x})$.}
-\item{The players $1, ..., n$ receive the values $x_1, ..., x_n$, respectively.}
-\item{In the quantum setting, the players may also possess an entangled $n$-part quantum state $\ket{\psi}$, which they may measure.}
-\item{Using their strategy, the players $1, ..., n$ output the values $\vec{a} = a_1(x_1), ..., a_n(x_n)$, respectively.}
-\item{The players win if $\bigoplus \vec{a} = \bigwedge \vec{x}$. Let the indicator variable $\texttt{win}(\vec{a}|\vec{x}) = 1$ if they win, $-1$ otherwise.}
-\end{itemize}
+%% \begin{itemize}
+%% \item{The $n$ players may collude to set up a strategy beforehand, but may not communicate afterwards.}
+%% \item{The adversary chooses a random $\vec{x}=(x_1, ..., x_n) \in X_1 \times ... \times X_n$, for some $X_1, ..., X_n$. The random choice is governed by a probability distribution $\pi$; each $\vec{x}$ is chosen with probability $\pi(\vec{x})$.}
+%% \item{The players $1, ..., n$ receive the values $x_1, ..., x_n$, respectively.}
+%% \item{In the quantum setting, the players may also possess an entangled $n$-part quantum state $\ket{\psi}$, which they may measure.}
+%% \item{Using their strategy, the players $1, ..., n$ output the values $\vec{a} = a_1(x_1), ..., a_n(x_n)$, respectively.}
+%% \item{The players win if $\bigoplus \vec{a} = \bigwedge \vec{x}$. Let the indicator variable $\texttt{win}(\vec{a}|\vec{x}) = 1$ if they win, $-1$ otherwise.}
+%% \end{itemize}
 
-The authors note that this game has not been studied before because of the simplicity of its strategies in the classical setting: by outputting $a_i=0$, the players are guaranteed to win unless the adversary happened to pick $x_i=1$. Therefore, against an adversary that always chooses $\vec{x}$ uniformly, the players can win with probability $1-2^n$.
+%% The authors note that this game has not been studied before because of the simplicity of its strategies in the classical setting: by outputting $a_i=0$, the players are guaranteed to win unless the adversary happened to pick $x_i=1$. Therefore, against an adversary that always chooses $\vec{x}$ uniformly, the players can win with probability $1-2^n$.
 
 %% However, this game becomes more interesting when we consider worst-case bounds: if the adversary is allowed to choose $\pi$, the optimal strategy for the players becomes less trivial. The authors show that $\lim_{n \rightarrow \infty}Pr(win) = 2/3$ in both the classical case and the quantum case. 
 
@@ -49,9 +49,9 @@ The authors note that this game has not been studied before because of the simpl
 %% In previous results [[cite Ambainis 2010]], the authors demonstrate that the value of [...TODO].
 %% \end{proof}
 
-\subsection{Fully Generalized Games}
+% \subsection{Fully Generalized Games}
 
-The n-party AND game is similar to the CHSH game because of its win condition: $\bigoplus \vec{a} = \bigwedge \vec{x}$. We can generalize this game further still by permitting arbitrary win conditions.
+An additional generalization is possible: the n-party AND game is similar to the CHSH game because of its win condition, $\bigoplus \vec{a} = \bigwedge \vec{x}$. We can generalize this game further still by permitting arbitrary win conditions.
 
 \begin{itemize}
 \item{The $n$ players may collude to set up a strategy beforehand, but may not communicate afterwards.}

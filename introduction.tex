@@ -1,16 +1,14 @@
-\section{Introduction}
-
 \newcommand{\Expected}{\mathop{\mathds{E}}}
 
-TODO: describe what Yao's minimax principle is, and what it is good for
+\section{Introduction}
 
-We will begin with a reminder of the intuition behind Yao's minimax principle.
+Yao's minimax principle can be used to prove lower bounds for randomized algorithms.
 
 \subsection{Statement of the principle}
 
-Yao's principle states that \emph{the best deterministic algorithm, when run on any distribution over random inputs, is at least as good as any randomized algorithm when run on the worst-case input}. In other words,
+The principle states that \emph{the best deterministic algorithm, when run on any distribution over random inputs, is at least as good as any randomized algorithm when run on the worst-case input}. More formally,
 
-$$\max_{x \in \mathcal{X}} \Expected_{r \in R} \texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} \texttt{cost}(r, x)$$
+$$\min_{r \in \mathcal{R}} \Expected_{x \in X} \texttt{cost}(r, x) \leq \max_{x \in \mathcal{X}} \Expected_{r \in R} \texttt{cost}(r, x)$$
 
 where \begin{align*}
 \mathcal{X} =&\; \text{the set of all possible inputs to the algorithm.}
@@ -25,27 +23,33 @@ R =&\; \text{any probability distribution over strings defining deterministic al
           \\& \text{if the specific algorithm to use is defined by string $r$.}
 \end{align*}
 
+In other words, if you can figure out how well the best deterministic algorithm runs against any distribution $X$ of random inputs, you know that any randomized algorithm you formulate can do no better against its worst-case input -- giving you a lower bound on the randomized algorithm's running time.
+Although $X$ need not be the worst possible distribution over random inputs for this principle to be useful, note that the worse $X$ is as an input distribution, the tighter the resulting lower bound will be. 
+
+To further develop the intuition behind Yao's minimax principle, we will briefly cover its proof.
+
 \subsection{Proof of the principle}
 
-First, consider game theory. Each player $i$ has a set of moves $M_i$ that they may choose from. A two-player game is defined by a \emph{payoff matrix} of outcomes for each player, a function mapping $M_1 \times M_2 \rightarrow \mathds{R} \times \mathds{R}$.
+Consider a two-player game, as defined in game theory. Each player $i$ has a set of moves $M_i$ that they may choose from. The game is defined by a \emph{payoff matrix} of outcomes for each player, a function mapping $M_1 \times M_2 \rightarrow \mathds{R} \times \mathds{R}$.
 
-In a \emph{pure strategy}, player $1$ chooses exactly one move $x$ from $M_i$ to play. In a \emph{mixed strategy}, player $1$ instead chooses a probability distribution $\pi_i(x)$ of moves from $M_i$.
+In a \emph{pure strategy}, player $1$ chooses exactly one move $x$ from $M_1$ to play. In a \emph{mixed strategy}, player $1$ instead chooses a probability distribution $\pi_1(x)$ of moves from $M_1$.
 
 Let $\texttt{payoff}_1(x, y)$ denote the payoff to player 1 when the players choose moves $x$ and $y$, respectively.
 
-\textbf{Lemma:} If you ``announce'' your mixed strategy -- thus committing to not change it -- then there exists a pure strategy for me that does at least as good as any mixed strategy for me. That is:
+%% \textbf{Lemma:} If you ``announce'' your mixed strategy -- thus committing to not change it -- then there exists a pure strategy for me that does at least as good as any mixed strategy for me. That is:
 
-$$\forall \pi_1, \pi_2, \exists x_{opt}, \Expected_{y \in \pi_2} \texttt{payoff}_1(x_{opt}, y) \geq \Expected_{y \in \pi_2, x \in \pi_1} \texttt{payoff}_1(x, y)$$
+%% $$\forall \pi_1, \pi_2, \exists x_{opt}, \Expected_{y \in \pi_2} \texttt{payoff}_1(x_{opt}, y) \geq \Expected_{y \in \pi_2, x \in \pi_1} \texttt{payoff}_1(x, y)$$
 
-\begin{proof}
+%% \begin{proof}
 
-Each component move $x_i$ of $\pi_1$ contributes a component $\pi_1(x_i) \texttt{payoff}_1(x_i, y)$ to the sum $\Expected_{x \in \pi_1} \texttt{payoff}_1(x, y)$. There exists some move $x_{opt}$ for which $\texttt{payoff}_1(x_i, y)$ is maximized. If we choose that $x_{opt}$ as a pure strategy instead, then $\Expected_{y \in \pi_2} \texttt{payoff}_1(x_{opt}, y) \geq \Expected_{y \in \pi_2, x \in \pi_1} \texttt{payoff}_1(x, y)$ as desired.
+%% Each component move $x_i$ of $\pi_1$ contributes a component $\pi_1(x_i) \texttt{payoff}_1(x_i, y)$ to the sum $\Expected_{x \in \pi_1} \texttt{payoff}_1(x, y)$. There exists some move $x_{opt}$ for which $\texttt{payoff}_1(x_i, y)$ is maximized. If we choose that $x_{opt}$ as a pure strategy instead, then $\Expected_{y \in \pi_2} \texttt{payoff}_1(x_{opt}, y) \geq \Expected_{y \in \pi_2, x \in \pi_1} \texttt{payoff}_1(x, y)$ as desired.
 
-\end{proof}
+%% \end{proof}
 
-TODO: something about how this leads to the below
+This leads to von Neumann's minimax theorem,
 
-$$\max_{b \in \mathcal{b}} \Expected_{a \in A} \texttt{payoff}_1(a, b) \leq \min_{a \in \mathcal{A}} \Expected_{b \in B} \texttt{payoff}_1(a, b)$$
+$$\max_{A \in \mathcal{A}} \min_{B \in \mathcal{B}} \Expected_{a \in A, b \in B} \texttt{payoff}_1(a, b) = \min_{B \in \mathcal{B}} \max_{A \in \mathcal{A}} \Expected_{a \in A, b \in B} \texttt{payoff}_1(a, b)$$
+
 
 where \begin{align*}
 \mathcal{A} =&\; \text{set of moves available to player 1.}
@@ -61,16 +65,24 @@ B =&\; \text{any probability distribution over moves to player 2}
 \texttt{payoff}_1(a, b) =&\; \text{the payoff to player 1}
 \end{align*}
 
-Given this inequality, we need only observe the following correspondence between algorithms and strategies and between inputs and strategies in order to yield Yao's principle.
+This in turn can be rewritten to yield the following:
 
-$$\max_{x \in \mathcal{X}} \Expected_{r \in R} \texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} \texttt{cost}(r, x)$$
+$$\max_{a \in \mathcal{A}} \Expected_{b \in B} \texttt{payoff}_1(a, b) \geq \max_{b \in \mathcal{B}} \Expected_{a \in A} \texttt{payoff}_1(a, b)$$
+
+for any mixed strategies $A$ and $B$.
+
+Finally, given this inequality, we need only observe the following correspondence between algorithms and strategies and between inputs and strategies in order to yield Yao's principle, as follows:
+
+$$\min_{r \in \mathcal{R}} \Expected_{x \in X} \texttt{cost}(r, x) \leq \max_{x \in \mathcal{X}} \Expected_{r \in R} \texttt{cost}(r, x)$$
+
+for any distribution $X$ of inputs and any distribution $R$ of randomized algorithms.
 
 \begin{itemize}
 
 \item{The set of moves for player 1 ($\mathcal{A}$) is the same as the set of deterministic algorithms ($\mathcal{R}$).}
 \item{The set of moves for player 2 ($\mathcal{B}$) is the same as the set of possible inputs ($\mathcal{X}$).}
 \item{A mixed strategy for player 1 ($A$) is the same as a randomized algorithm -- that is, a probability distribution over deterministic algorithms ($R$).}
-\item{A mixed strategy for player 2 ($B$) is the same as a probability distribution over inputs to the algorithm.}
+\item{A mixed strategy for player 2 ($B$) is the same as a probability distribution over inputs to the algorithm ($X$).}
 \item{The payoff to player 1 ($\texttt{payoff}$) is the negated cost to player 1 ($-\texttt{cost}$).}
 
 \end{itemize}
