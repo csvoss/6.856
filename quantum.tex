@@ -1,6 +1,6 @@
 \section{Yao's Principle in Quantum Information}
 
-Yao's principle isn't just used for proving worst-case bounds on the running time of algorithms. Another area where Yao's principle has found an application is in the study of certain games in quantum information, permitting proof of worst-case bounds for strategies in these games. In this section, we will examine how Yao's minimax principle may be used for this purpose, as demonstrated in \emph{Worst Case Analysis of Non-local Games} by Ambainis et al.
+Yao's principle isn't just used for proving worst-case bounds on the competitiveness of algorithms. Another area where Yao's principle has found an application is in the study of certain games in quantum information, permitting proof of worst-case bounds for strategies in these games. In this section, we will examine how Yao's minimax principle may be used for this purpose, as demonstrated in \emph{Worst Case Analysis of Non-local Games} by Ambainis et al.
 
 
 \subsection{Quantum Preliminaries}
@@ -18,11 +18,11 @@ An example of such a game is the CHSH (Clauser-Horne-Shimonyi-Holt) game:
 \item{The players win if $a_1 \oplus a_2 = x_1 \wedge x_2$.}
 \end{itemize}
 
-Both under classical physics and under any ``local hidden variable theory'' -- explanation of quantum phenomena as being due to extra local hidden variables -- the best that the players can achieve is a win probability of 0.75. If the players are allowed to share entangled quantum bits, however, then they can win more often: $\frac12 + \frac1{2\sqrt2} = 0.8535$... becomes the best win probability that the players can achieve. [[cite Clauser]] [[cite Ambainis 2013]]
+Both under classical physics and under any ``local hidden variable theory'' -- explanation of quantum phenomena as being due to extra local hidden variables -- the best that the players can achieve is a win probability of 0.75. If the players are allowed to share entangled quantum bits, however, then they can win more often: $\frac12 + \frac1{2\sqrt2} = 0.8535$... becomes the best win probability that the players can achieve \cite{ABBSSV,CHSH}.
 
-The CHSH game was designed so as to be an actual realizable experiment, and experiments have since confirmed that the way the universe works is consistent with quantum entanglement, and not consistent with local hidden variable theories. [[cite Aspect]]
+The CHSH game was designed so as to be an actual realizable experiment, and experiments have since confirmed that the way the universe works is consistent with quantum entanglement, and not consistent with local hidden variable theories \cite{aspect}
 
-In \emph{Worst Case Analysis of Non-local Games} by Ambainis et al., the authors examine generalized games beyond the simple CHSH game, and analyze the worst-case performance of strategies in both classical and quantum physics. [[cite Ambainis 2013]]
+In \emph{Worst Case Analysis of Non-local Games} by Ambainis et al., the authors examine generalized games beyond the simple CHSH game, and analyze the worst-case performance of strategies in both classical and quantum physics \cite{ABBSSV}.
 
 \subsection{Generalized CHSH}
 
@@ -68,7 +68,7 @@ $$\omega^\pi(G) \equiv \max_{\vec{a}} \Expected_{\vec{x} \in \pi} \texttt{win}(\
 
 $$\omega(G) \equiv \max_{\vec{a}} \min_\pi \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}|\vec{x})$$
 
-One research pursuit in quantum information has been finding games that show the greatest possible separation between the quantum strategy and the classical strategy: seeking to maximize the ratio $\frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$. [[cite Ambainis 2013]] Interestingly, no matter what the proposition $\texttt{win}$ is, the separation ratio $\frac{\omega_q(G)}{\omega_c(G)}$, in the case where the adversary chooses the worst possible distribution $\pi$ \emph{separately} for \emph{each} of the classical case and the quantum case, is never bigger than the maximum value of $\frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$ for a fixed probability distribution $\pi$. This proof uses Yao's minimax principle.
+One research pursuit in quantum information has been finding games that show the greatest possible separation between the quantum strategy and the classical strategy: seeking to maximize the ratio $\frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$ \cite{ABBSSV}. Interestingly, no matter what the proposition $\texttt{win}$ is, the separation ratio $\frac{\omega_q(G)}{\omega_c(G)}$, in the case where the adversary chooses the worst possible distribution $\pi$ \emph{separately} for \emph{each} of the classical case and the quantum case, is never bigger than the maximum value of $\frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$ for a fixed probability distribution $\pi$. This proof uses Yao's minimax principle.
 
 \textbf{Theorem:} $\frac{\omega_q(G)}{\omega_c(G)} \leq \max_\pi \frac{\omega_q^\pi(G)}{\omega_c^\pi(G)}$.
 
