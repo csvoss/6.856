@@ -1,51 +1,82 @@
 \section{Introduction}
 
+\newcommand{\Expected}{\mathop{\mathds{E}}}
+
+TODO: describe what Yao's minimax principle is, and what it is good for
+
 We will begin with a reminder of the intuition behind Yao's minimax principle.
 
 \subsection{Statement of the principle}
 
 Yao's principle states that \emph{the best deterministic algorithm, when run on any distribution over random inputs, is at least as good as any randomized algorithm when run on the worst-case input}. In other words,
 
-$$\max_{x \in \mathcal{X}} \mathop{\mathds{E}}_{r \in R} cost(r, x) \geq \min_{r \in \mathcal{R}} \mathop{\mathds{E}}_{x \in X} cost(r, x)$$
+$$\max_{x \in \mathcal{X}} \Expected_{r \in R} texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} texttt{cost}(r, x)$$
 
 where \begin{align*}
-\mathcal{X} =&\; \text{the set of all possible inputs to the algorithm}
+\mathcal{X} =&\; \text{the set of all possible inputs to the algorithm.}
 \\
-\mathcal{R} =&\; \text{the set of all possible strings defining deterministic algorithms}
+\mathcal{R} =&\; \text{the set of all possible strings defining deterministic algorithms.}
 \\
-X =&\; \text{any probability distribution over inputs to the algorithm}
+X =&\; \text{any probability distribution over inputs to the algorithm.}
 \\
-R =&\; \text{any probability distribution over strings defining deterministic algorithms}
+R =&\; \text{any probability distribution over strings defining deterministic algorithms.}
 \\
-cost(r, x) =&\; \text{the cost (usually running time) of the algorithm running on input $x$,}
-          \\& \text{if the specific algorithm to use is defined by string $r$}
+texttt{cost}(r, x) =&\; \text{the cost (usually running time) of the algorithm running on input $x$,}
+          \\& \text{if the specific algorithm to use is defined by string $r$.}
 \end{align*}
 
 \subsection{Proof of the principle}
 
 First, consider game theory. Each player $i$ has a set of moves $M_i$ that they may choose from. A two-player game is defined by a \emph{payoff matrix} of outcomes for each player, a function mapping $M_1 \times M_2 \rightarrow \mathds{R} \times \mathds{R}$.
 
-In a \emph{pure strategy}, player $i$ chooses exactly one move $m$ from $M_i$ to play. In a \emph{mixed strategy}, player $i$ instead chooses a probability distribution $\pi(m)$ of moves from $M_i$.
+In a \emph{pure strategy}, player $1$ chooses exactly one move $x$ from $M_i$ to play. In a \emph{mixed strategy}, player $1$ instead chooses a probability distribution $\pi_i(x)$ of moves from $M_i$.
 
-\subsubsection{Proof of von Neumann's minimax theorem}
+Let $\texttt{payoff}_1(x, y)$ denote the payoff to player 1 when the players choose moves $x$ and $y$, respectively.
 
-TODO: lemma about pure/mixed strategies
+\textbf{Lemma:} If you ``announce'' your mixed strategy -- thus committing to not change it -- then there exists a pure strategy for me that does at least as good as any mixed strategy for me. That is:
 
-TODO: the minimax theorem
+$$\forall \pi_1, \pi_2, \exists x_{opt}, \Expected_{y \in \pi_2} \texttt{payoff}_1(x_{opt}, y) \geq \Expected_{y \in \pi_2, x \in \pi_1} \texttt{payoff}_1(x, y)$$
 
-TODO: lead this into the inequality
+\begin{proof}
 
-TODO: replace the 'best's with 'any's
+Each component move $x_i$ of $\pi_1$ contributes a component $\pi_1(x_i) \texttt{payoff}_1(x_i, y)$ to the sum $\Expected_{x \in \pi_1} \texttt{payoff}_1(x, y)$. There exists some move $x_{opt}$ for which $\texttt{payoff}_1(x_i, y)$ is maximized. If we choose that $x_{opt}$ as a pure strategy instead, then $\Expected_{y \in \pi_2} \texttt{payoff}_1(x_{opt}, y) \geq \Expected_{y \in \pi_2, x \in \pi_1} \texttt{payoff}_1(x, y)$ as desired.
 
-TODO: conclude with the convenient pre-Yao inequality
+\end{proof}
 
-\subsubsection{von Neumann's minimax theorem $\longrightarrow$ Yao's minimax principle}
+TODO: something about how this leads to the below
 
-TODO: discuss how we turn this statement about pure/mized strategies into a statement about algorithms and adversaries
+$$\max_{b \in \mathcal{b}} \Expected_{a \in A} payoff(a, b) \leq \min_{a \in \mathcal{A}} \Expected_{b \in B} payoff(a, b)$$
+
+where \begin{align*}
+\mathcal{A} =&\; \text{set of moves available to player 1.}
+\\
+\mathcal{B} =&\; \text{set of moves available to player 2.}
+\\
+A =&\; \text{any probability distribution over moves to player 1 -- that is, any mixed strategy for player 1.}
+\\
+B =&\; \text{any probability distribution over moves to player 2 -- that is, any mixed strategy for player 2.}
+\\
+\texttt{payoff}(a, b) =&\; \text{the payoff to player 1}
+\end{align*}
+
+Given this inequality, we need only observe the following correspondence between algorithms and strategies and between inputs and strategies in order to yield Yao's principle.
+
+$$\max_{x \in \mathcal{X}} \Expected_{r \in R} texttt{cost}(r, x) \geq \min_{r \in \mathcal{R}} \Expected_{x \in X} texttt{cost}(r, x)$$
+
+\begin{itemize}
+
+\item{The set of moves for player 1 ($\mathcal{A}$) is the same as the set of deterministic algorithms ($\mathcal{R}$).}
+\item{The set of moves for player 2 ($\mathcal{B}$) is the same as the set of possible inputs ($\mathcal{X}$).}
+\item{A mixed strategy for player 1 ($A$) is the same as a randomized algorithm -- that is, a probability distribution over deterministic algorithms ($R$).}
+\item{A mixed strategy for player 2 ($B$) is the same as a probability distribution over inputs to the algorithm.}
+\item{The payoff to player 1 ($\texttt{payoff}$) is the negated cost to player 1 ($-\texttt{cost}$).}
+
+\end{itemize}
+
 
 The following table summarizes each of the parts of Yao's principle, and their roles. As we demonstrate examples which utilize Yao's principle, this table will be used in order to clarify how the principle applies to each new situation.
 
-\begin{tabular}{r l}
+\begin{tabular}{r l} %% We can definitely change this table. This is just a first draft.
 Randomized algorithm chooses: & some distribution $R$ over strings $r$ as its source of randomness
 \\
 Deterministic algorithm chooses: & some fixed string $r$
@@ -54,5 +85,5 @@ Mixed-strategy adversary chooses: & some distribution $X$ over inputs $x$ for th
 \\
 Pure-strategy adversary chooses: & some fixed input $x$
 \\
-Adversary wants to maximize: & the running time of the algorithm, $cost(r,x)$
+Adversary wants to maximize: & the running time of the algorithm, $texttt{cost}(r,x)$
 \end{tabular}
