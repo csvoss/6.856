@@ -67,11 +67,11 @@ for a given value of $n$ and where there are $k+1$ items with probability $p_k =
 	\[ \sum_{i=1}^n 1\cdot p_i + \sum_{i=n+1}^{n^2} \frac{i}{n}\cdot p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^n e^{-(i-1)/n} + \frac{1}{n} \sum_{i=n+1}^{n^2} i\cdot e^{-(i-1)/n} \right) \]
 	which has value $1+1/e$ as $n \rightarrow \infty$.
 
-	Now an online deterministic algorithm can only decide on which item $e_l$ to remove $e_0$. Then the expected value of this algorithm is
-	\[ \sum_{i=1}^l 1\cdot p_i + \sum_{i=l+1}^{n^2} \frac{i-l}{n}\cdot p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^l e^{-(i-1)/n} + \frac{1}{n} \sum_{i=l+1}^{n^2} (i-1)\cdot e^{-(i-1)/n} \right) \]
+	Since on this set of inputs, the initial item has weight 1 and the sum of the rest of the items is at most 1, any optimal algorithm having removed the initial item can perform a greedy algorithm and put all future items in the knapsack. Thus an optimal online deterministic algorithm can only decide how many items it must see before it removes $e_0$. For inputs $k<l$, the algorithm keeps $e_0$ and removes all incoming items, so it obtains value 1. For $k\ge l$, the algorithm removes $e_0$ when the $l$\textsuperscript{th} item appears, and accumulates items $e_l$ through $e_k$. Then the expected value of this algorithm is
+	\[ \sum_{i=1}^{l-1} 1\cdot p_i + \sum_{i=l}^{n^2} \frac{i-l}{n}\cdot p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^{l-1} e^{-(i-1)/n} + \frac{1}{n} \sum_{i=l}^{n^2} (i-1)\cdot e^{-(i-1)/n} \right) \]
 which has value 1 as $n \rightarrow \infty$.
 
-Thus any online algorithm has competitive ratio at least $1+1/e$.
+By Yao's Principle, since every deterministic algorithm has finds $(1+1/e)^{-1}$ of the optimum set on this distribution of inputs, any online algorithm performs at least as poorly. Thus any online algorithm to this problem has competitive ratio at least $1+1/e$.
 \end{proof}
 
 %\subsection{Remarks}

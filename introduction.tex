@@ -1,14 +1,23 @@
-\newcommand{\Expected}{\mathop{\mathds{E}}}
+\newcommand{\Expected}{\displaystyle\mathop{\mathds{E}}}
+\newcommand{\argmin}{\displaystyle\mathop{\text{arg\;min}}}
 
 \section{Introduction}
 
 Yao's minimax principle, proposed by Yao in 1977, was first used to study lower bounds on the optimal running times of randomized algorithms for a particular problem. In this paper, we survey a series of games for which Yao's principle can be used to bound the effectiveness of all randomized algorithms against an adversary.
 In this section, we present Yao's Principle and give a proof of it.
 
+But first, we clarify the definition of a randomized algorithm.
+
+\begin{description}
+	\item[Randomized Algorithm] An algorithm which has the capabilities of a deterministic algorithm but with additional access to a stream of uniformly random bits.
+\end{description}
+
+Thus we can model a randomized algorithm as a deterministic algorithm with an additional secondary input of a stream of random bits. Conditioned on this stream, this is an entirely deterministic algorithm. Thus a randomized algorithm is modeled by a set of deterministic algorithms from which the randomized algorithm chooses at runtime with some probability distribution, before seeing the primary input.
+
 %\subsection{Yao's Principle}
 
 \begin{description}
-	\item[Yao's Minimax Principle] \emph{The best deterministic algorithm, when run on any distribution over random inputs, is at least as good as any randomized algorithm when run on the worst-case input}.
+	\item[Yao's Minimax Principle] \emph{The best deterministic algorithm for any particular distribution of inputs runs at least as well as any randomized algorithm when run on its own worst-case input}.
 \end{description}
 More formally,
 
@@ -21,15 +30,31 @@ where \begin{align*}
 \\
 X =&\; \text{any probability distribution over inputs to the algorithm.}
 \\
-R =&\; \text{any probability distribution over strings defining deterministic algorithms.}
+R =&\; \text{\parbox[t]{5.5in}{any randomized algorithm, ie., any probability distribution over strings defining deterministic algorithms.}}
 \\
-\texttt{cost}(r, x) =&\; \text{\parbox[t]{5.5in}{the cost (often running time but in this paper will be an optimization quantity) of the algorithm running on input $x$, if the specific algorithm to use is defined by string $r$.}}
+\texttt{cost}(r, x) =&\; \text{\parbox[t]{5.5in}{the cost (often running time but in this paper will be an optimization quantity) of the algorithm $r$ running on input $x$.}}
 \end{align*}
 
 In other words, if you can figure out how well the best deterministic algorithm runs against any distribution $X$ of random inputs, you know that any randomized algorithm you formulate can do no better against its worst-case input -- giving you a lower bound on the randomized algorithm's running time.
 Although $X$ need not be the worst possible distribution over random inputs for this principle to be useful, note that the worse $X$ is as an input distribution, the tighter the resulting lower bound will be. 
 
 To further develop the intuition behind Yao's minimax principle, we will briefly cover its proof.
+
+\subsection{Direct Proof of Yao's Principle}
+
+Consider an arbitrary input distribution $X$. Let $d_X$ be the best deterministic algorithm for input distribution $X$, that is, the deterministic algorithm which minimizes expected cost $\Expected_{x\in X}\texttt{cost}(d_X,x)$.
+
+Now since any randomized algorithm $R$ can be modeled as a distribution of deterministic algorithms, the expected cost of $R$ on $X$ is $\Expected_{x\in X}\Expected_{r\in R}\texttt{cost}(r,x)$, or $\Expected_{r\in R}\Expected_{x\in X}\texttt{cost}(r,x)$ by linearity of expectation. This is the weighted average of the expected costs of the deterministic algorithms in the distribution of $R$. Since the cost of each of these is at least $\Expected_{x\in X}\texttt{cost}(d_X,x)$, we have
+\[\Expected_{r\in R}\Expected_{x\in X}\texttt{cost}(r,x) \ge \Expected_{x\in X}\texttt{cost}(d_X,x)\]
+
+The cost of $R$ on its worst-case input cannot be greater than the cost of $R$ on this input distribution. Then
+\[\max_{x\in\mathcal{X}}\Expected_{r\in R}\texttt{cost}(r,x)
+\ge \Expected_{x\in X}\Expected_{r\in R}\texttt{cost}(r,x)
+= \Expected_{r\in R}\Expected_{x\in X}\texttt{cost}(r,x)
+\ge \Expected_{x\in X}\texttt{cost}(d_X,x)\]
+
+Now $d_X$ is simply $\argmin_{r\in\mathcal{R}}\Expected_{x\in X}\texttt{cost}(r,x)$ by definition. Thus we have
+\[\max_{x\in\mathcal{X}}\Expected_{r\in R}\texttt{cost}(r,x) \ge \min_{r\in\mathcal{R}}\Expected_{x\in X}\texttt{cost}(r,x)\]
 
 \subsection{Proof of Yao's Principle}
 
