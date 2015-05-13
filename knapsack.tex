@@ -12,11 +12,11 @@ Since the online nature of the problem is what makes it impossible to always ach
 
 \emph{MAX} simply selects the item with the largest value whose weight does not exceed 1. In the offline case, we can process each item in an arbitrary order and keep track of the best item so far. Therefore, in the online case, we can do exactly the same with the order given to us, storing the best item so far in our knapsack.
 
-$GREEDY$ selects the $k$ items with the highest ratios of value to weight $v_i/w_i$, maximizing $k$ while keeping the sum of the weights of the selected items at most 1. In the offline case, this can be done trivially by sorting the items by ratio and then selecting the highest $k$ items. An online algorithm can perform at least as well by keeping a working set of the items with the highest ratio while processing each input.
+\emph{GREEDY} selects the $k$ items with the highest ratios of value to weight $v_i/w_i$, maximizing $k$ while keeping the sum of the weights of the selected items at most 1. In the offline case, this can be done trivially by sorting the items by ratio and then selecting the highest $k$ items. An online algorithm can perform at least as well by keeping a working set of the items with the highest ratio while processing each input.
 %We demonstrate that a set at least as good is found in the online case by the following algorithm.
 
 \begin{algorithm}
-	\caption{online $GREEDY$}
+	\caption{online \emph{GREEDY}}
 	$S \leftarrow \emptyset$\;
 	\ForEach{item $e_i$ with $w_i\le1$, in order of arrival}{
 		$S \leftarrow S \cup \{e_i\}$\;
@@ -26,18 +26,18 @@ $GREEDY$ selects the $k$ items with the highest ratios of value to weight $v_i/w
 	}
 \end{algorithm}
 
-%We claim every item selected in the offline $GREEDY$ algorithm is selected in the online $GREEDY$ algorithm. Consider the $k$ items the offline algorithm selected. Each
-When the sum of the weights in $S$ is greater than 1, an item with ratio less than that of the $k$ items with the largest ratios must be in $S$; therefore the $k$ items will never be removed. Thus $S$ is a superset of the items the offline $GREEDY$ algorithm selects.
+%We claim every item selected in the offline \emph{GREEDY} algorithm is selected in the online \emph{GREEDY} algorithm. Consider the $k$ items the offline algorithm selected. Each
+When the sum of the weights in $S$ is greater than 1, an item with ratio less than that of the $k$ items with the largest ratios must be in $S$; therefore the $k$ items will never be removed. Thus $S$ is a superset of the items the offline \emph{GREEDY} algorithm selects.
 
-Neither $MAX$ nor $GREEDY$ alone is competitive. Consider an input sequence $\{(w_i,v_i)\}$ of $\{(\epsilon,2\epsilon),\ (\epsilon,\epsilon),\ (\epsilon,\epsilon),\ \ldots\}$ on the $MAX$ algorithm and $\{(\epsilon, 2\epsilon),\ (1,1)\}$ on the $GREEDY$ algorithm. In fact, no deterministic online algorithm is competitive with a constant factor \cite{iwama}. However, using both with randomness can yield a competitive algorithm.
+Neither \emph{MAX} nor \emph{GREEDY} alone is competitive. Consider an input sequence $\{(w_i,v_i)\}$ of $\{(\epsilon,2\epsilon),\ (\epsilon,\epsilon),\ (\epsilon,\epsilon),\ \ldots\}$ on the \emph{MAX} algorithm and $\{(\epsilon, 2\epsilon),\ (1,1)\}$ on the \emph{GREEDY} algorithm. In fact, no deterministic online algorithm is competitive with a constant factor \cite{iwama}. However, using both with randomness can yield a competitive algorithm.
 
 \begin{theorem}
-	Running $MAX$ and $GREEDY$ uniformly at random is a 2-competitive algorithm~\cite{han}.
+	Running \emph{MAX} and \emph{GREEDY} uniformly at random is a 2-competitive algorithm~\cite{han}.
 \end{theorem}
 \begin{proof}
-	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by $GREEDY$, $MAX$, and an optimal solution, respectively. Consider the \emph{fractional} knapsack solution to the offline problem with input sequence $T$: that is, when we are allowed to take fractional parts of items. Then, a greedy solution is optimal: Sort by ratio, and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. The fractional knapsack problem is a relaxation of the integral knapsack problem, so the fractional solution is not worse than the integral solution.
+	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by \emph{GREEDY}, \emph{MAX}, and an optimal solution, respectively. Consider the \emph{fractional} knapsack solution to the offline problem with input sequence $T$: that is, when we are allowed to take fractional parts of items. Then, a greedy solution is optimal: Sort by ratio, and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. The fractional knapsack problem is a relaxation of the integral knapsack problem, so the fractional solution is not worse than the integral solution.
 	
-	Now the offline $GREEDY$ algorithm by definition selects all the items in the fractional solution except the final fractional item (if one exists). Thus the online $GREEDY$ algorithm also selects all except the fractional item. Finally, the $MAX$ algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is
+	Now the offline \emph{GREEDY} algorithm by definition selects all the items in the fractional solution except the final fractional item (if one exists). Thus the online \emph{GREEDY} algorithm also selects all except the fractional item. Finally, the \emph{MAX} algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is
 \begin{equation*}
 \frac{2\cdot OPT(T)}{GREEDY(T)+MAX(T)} \le 2.\qedhere
 \end{equation*}
@@ -66,11 +66,11 @@ for a given value of $n$ and where there are $k+1$ items with probability $p_k =
 \end{theorem}
 \begin{proof}
 	We apply Yao's principle on the input distribution~\eqref{eq:knapsack_dist}. The optimal strategy with full information is to keep $e_0$ for $k\le n$ and remove $e_0$ immediately otherwise. This leads us to the expected optimal value
-	\[ \sum_{i=1}^n 1\cdot p_i + \sum_{i=n+1}^{n^2} \frac{i}{n} p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^n e^{-(i-1)/n} + \frac{1}{n} \sum_{i=n+1}^{n^2} i\cdot e^{-(i-1)/n} \right) \]
+	\[ \sum_{i=1}^n 1\cdot p_i + \sum_{i=n+1}^{n^2} \frac{i}{n} p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^n e^{-(i-1)/n} + \frac{1}{n} \sum_{i=n+1}^{n^2} i\cdot e^{-(i-1)/n} \right), \]
 	which has value $1+1/e$ as $n$ approaches infinity.
 
 	Since on this set of inputs, the initial item has weight 1 and the sum of the rest of the items is at most 1, any optimal algorithm having removed the initial item can perform a greedy algorithm and put all future items in the knapsack. Thus an optimal online deterministic algorithm can only decide how many items it must see before it removes $e_0$. For inputs $k<l$, the algorithm keeps $e_0$ and removes all incoming items, so it obtains value 1. For $k\ge l$, the algorithm removes $e_0$ when the $l$\textsuperscript{th} item appears, and accumulates items $e_l$ through $e_k$. Then the expected value of this algorithm is
-	\[ \sum_{i=1}^{l-1} 1\cdot p_i + \sum_{i=l}^{n^2} \frac{i-l}{n} p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^{l-1} e^{-(i-1)/n} + \frac{1}{n} \sum_{i=l}^{n^2} (i-1) e^{-(i-1)/n} \right) \]
+	\[ \sum_{i=1}^{l-1} 1\cdot p_i + \sum_{i=l}^{n^2} \frac{i-l}{n} p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^{l-1} e^{-(i-1)/n} + \frac{1}{n} \sum_{i=l}^{n^2} (i-1) e^{-(i-1)/n} \right), \]
 which has value 1 as $n$ approaches infinity.
 
 By Yao's principle, since every deterministic algorithm finds $(1+1/e)^{-1}$ of the optimum set on this distribution of inputs, any online algorithm performs at least as poorly. Thus any online algorithm to this problem has competitive ratio at least $1+1/e$.
