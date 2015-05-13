@@ -38,9 +38,9 @@ R =&\; \text{\parbox[t]{5.5in}{any randomized algorithm, ie., any probability di
 In other words, if you can figure out how well the best deterministic algorithm runs against any distribution $X$ of random inputs, you know that any randomized algorithm you formulate can do no better against its worst-case input. This gives you a lower bound on the randomized algorithm's running time.
 Although $X$ need not be the worst possible distribution over random inputs for this principle to be useful, note that the worse $X$ is as an input distribution, the tighter the resulting lower bound will be. 
 
-To further develop the intuition behind Yao's minimax principle, we will briefly cover its proof.
+%To further develop the intuition behind Yao's minimax principle, we will briefly cover its proof.
 
-\subsection{Direct Proof of Yao's Principle}
+\subsection{Proof of Yao's Principle}
 
 Consider an arbitrary input distribution $X$. Let $d_X$ be the best deterministic algorithm for input distribution $X$, that is, the deterministic algorithm which minimizes expected cost $\Expected_{x\in X}\texttt{cost}(d_X,x)$.
 

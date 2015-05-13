@@ -46,7 +46,7 @@ We use Yao's principle to prove a lower bound of $1+1/e$ for the competitive rat
 
 To do so, we must find a distribution of inputs for which no deterministic algorithm performs ``well'', which means the expected value of the output from any deterministic algorithm is at most $\frac{1}{1+1/e}$ times the expected optimum. As the power of an offline algorithm is in the additional information it has over an online algorithm, it is reasonable that in constructing our ``bad'' input, we would want to limit the information the algorithm has about future items. Thus it is not surprising that we will construct a family of inputs where each input is a prefix of the same base sequence.
 
-Let the probability of $k+1$ items be $p_k$. For simplicity in analysis, we will let the first item $e_0=(w_0,v_0)=(1,1)$ with future items having much smaller weights and values but a higher ratio so that the problem is essentially reduced to determining when to remove the first item from the knapsack.
+For simplicity in analysis, we will let the first item $e_0=(w_0,v_0)=(1,1)$ with future items having much smaller weights and values but a higher ratio. Then the problem is essentially reduced to determining when to remove the first item from the knapsack.
 
 This is reminiscent of the \emph{ski rental problem}, one of the most well-understood online problems \cite{karlin}, where a client must choose whether and when to buy skis for a fixed cost versus paying a smaller cost each day. Our knapsack problem is the reverse of this: instead of deciding when to switch from renting skis to buying skis to minimize total cost, we are deciding when to switch from having a single large item in our knapsack to getting a stream of smaller items with a better ratio to maximize total value.
 
@@ -55,7 +55,7 @@ Finally, we want the expected value of removing $e_0$ and selecting all followin
 This leads us towards the input sequence given by Han et al. \cite{han}:
 \begin{equation}
 	\label{eq:knapsack_dist}
-	(1,1),\ \underbrace{(1/n^2,1/n),\ (1/n^2,1/n),\ldots\ (1/n^2,1/n)}_{k \text{ terms}}
+	(1,1),\ \underbrace{(1/n^2,1/n),\ (1/n^2,1/n),\ldots\ (1/n^2,1/n)}_{k \text{ items}}
 \end{equation}
 for a given value of $n$ and where there are $k+1$ items with probability $p_k = \frac{1-e^{-1/n}}{1-e^{-n}} \cdot e^{-(k-1)/n}$ for $k=1,2,\ldots,n^2$.
 
