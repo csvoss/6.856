@@ -70,7 +70,6 @@ The $n$-party AND game and the CHSH game share the same win condition, $\bigoplu
 \end{itemize}
 
 For any game~$G$, define $\omega^\pi(G)$ as $\Pr[\textrm{Win}] - \Pr[\textrm{Lose}]$ when $\pi$ is a probability distribution according to which the adversary chooses $\vec{x}$. Let $\omega(G)$ be the worst case $\omega^\pi(G)$: the minimum value of $\omega^\pi(G)$ over distributions $\pi$ that the adversary can choose from. Let $\omega_q$ and $\omega_c$ be $\omega$ in the quantum and classical cases, respectively. We defined the indicator variable $\texttt{win}(\vec{a}\Mid\vec{x})$ such that $\Pr[\textrm{Win}] - \Pr[\textrm{Lose}] = \Expected[ \texttt{win}(\vec{a}\Mid\vec{x}) ]$. Therefore, we can more formally define $\omega(G)$ and $\omega^\pi(G)$ as follows:
-
 \begin{align*}
 	\omega^\pi(G) &\equiv \max_{\vec{a}} \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}\Mid\vec{x}) \\
 	\omega(G) &\equiv \max_{\vec{a}} \min_\pi \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}\Mid\vec{x}).
