@@ -81,7 +81,7 @@ where $\rho$ is the best competitive ratio that can be obtained by using First-F
 If no deterministic algorithm can obtain a better competitive ratio on this set of inputs, then this is the best that a randomized algorithm could achieve.
 \subsubsection{Deterministic Algorithm Bounds}
 \begin{theorem}
-	No deterministic algorithm can obtain a better competitive ratio on the set of inputs $I$.
+	No deterministic algorithm can obtain a better competitive ratio on the distribution of inputs $I$.
 \end{theorem}
 \begin{proof}
 To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$, where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  
@@ -102,9 +102,9 @@ This can be shown by induction over the minimum number of colors on an input of 
 \begin{proof}
 This proof follows by induction:
 
-Define $P(m)$ as an upper bound for the competitive ratio of FF in the case where there are $m$ 1's in our sequence of decisions $D$.  $P(0)$ holds trivially - in a sequence of all zeros, FF behaves exactly the same as First-Fit and our competitive ratio is still \textasciitilde2.
+Define $P(m)$ to be true if $\rho$ is an upper bound for the competitive ratio of FF in the case where there are $m$ 1's in our sequence of decisions $D$.  $P(0)$ holds trivially -- in a sequence of all 0's, FF behaves exactly the same as First-Fit and our competitive ratio is still \textasciitilde2.
 
-Using strong induction, we assume that P(k) is true for all $k \in [0,m-1]$.  
+Using strong induction, we assume that $P(k)$ is true for all $k \in [0,m-1]$.  
 
 %Then, $i$ is defined as the index of the last bit which is 1 in $D_m$, an arbitrary sequence with $m$ 1's.  If we flip $D_m[i]$, we get a sequence $D_{m-1}$ with a competitive ratio at most $\rho$ (by induction).
 
@@ -114,7 +114,7 @@ Using strong induction, we assume that P(k) is true for all $k \in [0,m-1]$.
 
 %On sequences larger than $X_i$, $FF_m$ uses one less color than $FF_{m-1}$. This is because it opens a new color for $c_i$. However, $FF_m$ colors $a_{i+1}$ like $b_i$ and $b_{i+1}$ like $c_i$. Meanwhile $FF_{m-1}$ opens new colors for $a_{i+1}$ and $b_{i+1}$ since that's what First-Fit does. 
 
-By looking at the bits where $FF_m$ would differ from $FF_{m-1}$, we can derive the formula that:
+By looking at the bits of $D$ where $FF$ with $m$ 1's would differ from $FF$ with $m-1$ 1's, we can derive the formula that:
 
 \[\rho_m = \rho_{m-1} + \rho_i\left(\frac{1}{i}\right) - \sum_{j=i+1}^k \rho_i\left(\frac{1}{i}\right)\]
 
@@ -124,9 +124,7 @@ Substituting $\rho_i = \frac{2^k}{2^k-1}\cdot\frac{i}{2^i}$ gives us that the la
 In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$, which shows that no deterministic algorithm has a better competitive ratio on $I$. 
 \end{proof}
 
-By choosing $k$ arbitrarily large, $\rho$ tends to $\frac{3}{2}$. 
-
-Yao's principle then gives us a lower bound of $\frac{3}{2}$ as the competitive ratio on any randomized algorithm.
+By choosing $k$ arbitrarily large, $\rho$ tends to $\frac{3}{2}$. As we have now bounded the behavior of any deterministic algorithm on the distribution of inputs $I$, Yao's principle thus gives us a lower bound of $\frac{3}{2}$ as the competitive ratio on any randomized algorithm.
 %\subsection{Remarks}
 %This is an especially interesting application of Yao's principle because in unit co-interval graphs, randomization can prove a definite improvement in the competitive ratio. That is, it is still unknown whether there exists a deterministic algorithm that is better than 2-competitive in the case of unit co-interval graphs. However, using randomization, we can obtain a $3/2$ competitive ratio.
 
