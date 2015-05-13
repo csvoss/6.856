@@ -9,7 +9,7 @@ This problem is set up as follows:
 
 Since this is an online problem, the algorithm must assign colors as it goes, without knowing the complete set of intervals. That is, the algorithm will only receive information about $I_{j+1}$ after it has assigned colors to all intervals $I_k$ where $k \leq j$.
 
-First, we present the First-Fit approximation algorithm to solve this problem, which has a competitive ratio of at most 2. Then, using Yao's Principle, we can prove that there exist no randomized algorithm that achieves a competitive ratio that's better than $\frac{3}{2}$.
+First, we present the First-Fit approximation algorithm to solve this problem, which has a competitive ratio of at most 2. Then, using Yao's principle, we can prove that there exist no randomized algorithm that achieves a competitive ratio that's better than $\frac{3}{2}$.
 \subsection{Upper Bound}
 To solve the problem of assigning intervals different colors, the set of intervals is first constructed as a graph. That is, the input to our problem becomes:
 
@@ -56,7 +56,7 @@ From this set of blocks, we can choose a set of $k$ input sequences, simply by d
 
 It can be shown that the minimum number of colors required to color $X_i$ without any edges sharing a color is $i$.
 
-To use Yao's Principle on this input distribution, we need to show that if we set up a probability distribution over all possible $X_i$ that the expected competitive ratio will be at least $\frac{3}{2}$. The optimal deterministic algorithm that we will examine per each $X_i$ input is First-Fit - as previously shown, this algorithm uses $2\omega-1$ colors on each $X_i$. In this case, the chromatic number $\omega=i$, so, the expected number of colors for a given $X_i$ is exactly $2i-1$.
+To use Yao's principle on this input distribution, we need to show that if we set up a probability distribution over all possible $X_i$ that the expected competitive ratio will be at least $\frac{3}{2}$. The optimal deterministic algorithm that we will examine per each $X_i$ input is First-Fit - as previously shown, this algorithm uses $2\omega-1$ colors on each $X_i$. In this case, the chromatic number $\omega=i$, so, the expected number of colors for a given $X_i$ is exactly $2i-1$.
 
 For a given $X_i$, a new color is chosen (assuming First-Fit) on each $a_m$ and each $b_m$, since the blocks are given in order. A probability distribution $P$ can be defined over all $X_i$, where $p_i$ is the probability that $X_i$ is chosen as input, as follows:
 
@@ -121,7 +121,7 @@ In turn, this implies that the expected competitive ratio of any deterministic a
 
 By choosing $k$ arbitrarily large, $\rho$ tends to $\frac{3}{2}$. 
 
-Yao's Principle then gives us a lower bound of $\frac{3}{2}$ as the competitive ratio on any randomized algorithm.
+Yao's principle then gives us a lower bound of $\frac{3}{2}$ as the competitive ratio on any randomized algorithm.
 %\subsection{Remarks}
 %This is an especially interesting application of Yao's principle because in unit co-interval graphs, randomization can prove a definite improvement in the competitive ratio. That is, it is still unknown whether there exists a deterministic algorithm that is better than 2-competitive in the case of unit co-interval graphs. However, using randomization, we can obtain a $3/2$ competitive ratio.
 
