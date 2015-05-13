@@ -13,17 +13,20 @@ First, we present the First-Fit approximation algorithm to solve this problem, w
 \subsection{Upper Bound}
 To solve the problem of assigning intervals different colors, the set of intervals is first constructed as a graph. That is, the input to our problem becomes:
 
-$V$ := Set of intervals where $v_i$ represents the $i$'th interval
-
-$E$ := Set of edges where $(u,v) \in E$ iff interval $u$ and interval $v$ are disjoint
+\begin{center}
+	\begin{tabular}{rl}
+		$V$ &:= Set of intervals where $v_i$ represents the $i$\textsuperscript{th} interval \\
+		$E$ &:= Set of edges where $(u,v) \in E$ iff interval $u$ and interval $v$ are disjoint
+	\end{tabular}
+\end{center}
 
 Note that any vertices that aren't connected by an edge can be colored in the same color since they overlap. Thus, in such a graph, our problem is reduced to finding the minimum number of colors such that no connected vertices are the same color.
 
 The First-Fit algorithm is the simplest solution to this problem and does the following:
 \begin{verbatim}
-L = sorted list of colors
+L = ordered list of colors
 for a new vertex v:
-    assign v the smallest color that doesn't cause a collision
+    assign v the first color in L that doesn't cause a collision
 \end{verbatim}
 Essentially, the algorithm maintains a list of colors that can be used. These colors are sorted in an arbitrary order. The first vertex is simply assigned the smallest color. For any future vertex $v$, the algorithm scans the list. We can define a collision between vertices $u$ and $v$ at color $k$ if $u$ is colored $k$ and $v$ is connected to $u$ by an edge in $E$. If a collision occurs where $L[i] = k$, then we increment $i$. We assign $v$ the color at $L[j]$ where $j$ doesn't cause any collisions and try to minimize $j$.
 
@@ -36,22 +39,20 @@ Yao's minimax principle proves that the expected competitive ratio on an optimal
 To define such a set of inputs, essentially, we need to find a set of intervals that satisfy the condition that any deterministic algorithm is at most $\frac{3}{2}$-competitive. The idea behind constructing such a set of intervals is that any deterministic algorithm will make the same decision on any specific interval given the same information, regardless of what the future intervals are.
 
 \subsubsection{Problem Construction}
-The intervals defined by Zarrabi-Zadeh are: 
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8}]
-For $k \geq 1$:
-    For all 1 $\leq i \leq k$:
-        $a_i$ = [3$i$-3, 3$i$-2]
-        $b_i$ = [3$i$+1, 3$i$+2]
-        $c_i$ = [3$i$+2, $\infty$]
-\end{Verbatim}
+For $1\le i\le k$ for a given value of $k$, the intervals defined by Zarrabi-Zadeh \cite{zarrabi} are: 
+\begin{align*}
+	a_i &= [3i-3, 3i-2] \\
+	b_i &= [3i+1, 3i+2] \\
+	c_i &= [3i+2, \infty]
+\end{align*}
 We can then define a block as:
-$B_i = \begin{cases} {b_1, c_1} &\mbox{if } i \equiv 1 \\
-{a_i, b_i, c_i} & \mbox{if } i \in [2,k] \\
- {a_k, b_k} &\mbox{if } i \equiv k \end{cases}$ 
+$B_i = \begin{cases} {b_1, c_1} &\mbox{if } i = 1 \\
+{a_i, b_i, c_i} & \mbox{if } i \in [2,k) \\
+ {a_k, b_k} &\mbox{if } i = k \end{cases}$ 
 
 From this set of blocks, we can choose a set of $k$ input sequences, simply by defining our input sequence $X_i$ as the concatenation of blocks $B_1$, $B_2$... $B_i$, in order. Our set of all possible inputs then becomes the set: 
 
-$I =$ \{$X_i$ where $i \in [1,k]$\}
+\[I = \{X_i \text{ where } i \in [1,k]\}\]
 
 It can be shown that the minimum number of colors required to color $X_i$ without any edges sharing a color is $i$.
 
@@ -59,7 +60,7 @@ To use Yao's Principle on this input distribution, we need to show that if we se
 
 For a given $X_i$, a new color is chosen (assuming First-Fit) on each $a_m$ and each $b_m$, since the blocks are given in order. A probability distribution $P$ can be defined over all $X_i$, where $p_i$ is the probability that $X_i$ is chosen as input, as follows:
 
-\[p_i = \begin{cases} \frac{2^k}{2^k-1}*\frac{i}{2^i} &\mbox{if } i < k \\
+\[p_i = \begin{cases} \frac{2^k}{2^k-1}\cdot\frac{i}{2^i} &\mbox{if } i < k \\
 \frac{k}{2^k-1} & \mbox{if } i \equiv k 
  \end{cases}\]
 
@@ -75,12 +76,12 @@ where $\rho$ is the best competitive ratio that can be obtained by using First-F
 If no deterministic algorithm can obtain a better competitive ratio on this set of inputs, then this is the best that a randomized algorithm could achieve.
 \subsubsection{Deterministic Algorithm Bounds}
 \begin{theorem}
-No deterministic algorithm can obtain a better competitive ratio on the set of inputs $I$
+	No deterministic algorithm can obtain a better competitive ratio on the set of inputs $I$.
 \end{theorem}
 \begin{proof}
 To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$ where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$ since they don't intersect, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  
 
-Given a sequence of decisions, <$d_1, d_2...d_{k-1}$>, then we can define a deterministic algorithm FF as follows:
+Given a sequence of decisions, $\langle d_1, d_2...d_{k-1} \rangle$, then we can define a deterministic algorithm FF as follows:
 
 If we receive an interval $c_j$, we check what $d_j$ is and assign a new color iff $d_j = 1$. Else, we assign it the same color as $b_j$. 
 
@@ -92,7 +93,7 @@ This can be shown by induction, over the minimum number of colors on an input of
 %%Then, assuming that the minimum number of colors are used in an input of size $m$, then we know that all deterministic algorithms will behave the same way for a specific prefix of size $m$. We can then show that the minimum number of colors will be used on an input of size $m+1$ and the statement holds.
 \end{proof}
 
-\begin{lemma} The competitive ratio of FF is $\rho$ \end{lemma}
+\begin{lemma} The competitive ratio of FF is $\rho$. \end{lemma}
 \begin{proof}
 This proof follows by induction:
 
@@ -110,9 +111,9 @@ Using strong induction, we assume that P(k) is true for all $k \in [0,m-1]$.
 
 By looking at the bits where $FF_m$ would differ from $FF_{m-1}$, we can derive the formula that:
 
-\[\rho_m = \rho_{m-1} + \rho_i(\frac{1}{i}) - \sum_{j=i+1}^k \rho_i(\frac{1}{i})\]
+\[\rho_m = \rho_{m-1} + \rho_i\left(\frac{1}{i}\right) - \sum_{j=i+1}^k \rho_i\left(\frac{1}{i}\right)\]
 
-Substituting $\rho_i = \frac{2^k}{2^k-1}*\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$ and the proof follows by induction.
+Substituting $\rho_i = \frac{2^k}{2^k-1}\cdot\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$ and the proof follows by induction.
 \end{proof}
 
 In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$, which shows that no deterministic algorithm has a better competitive ratio on $I$. 

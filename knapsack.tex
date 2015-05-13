@@ -10,7 +10,7 @@ To prove an upper bound on the competitiveness of algorithms which yield a solut
 
 Since the online nature of the problem is what makes it impossible to always achieve the optimal solution, it is insightful to first consider algorithms which behave similarly in both online and offline situations. We look at $MAX$ and $GREEDY$.
 
-$MAX$ simply selects the item with the largest value whose weight does not exceed 1. Since in the offline case, we can process each item in an arbitrary order and keep track of the best item so far, in the online case, we can do exactly the same with the order given to us, storing the best item so far in our knapsack.
+$MAX$ simply selects the item with the largest value whose weight does not exceed 1. In the offline case, we can process each item in an arbitrary order and keep track of the best item so far. In the online case, we can do exactly the same with the order given to us, storing the best item so far in our knapsack.
 
 $GREEDY$ selects the $k$ items with the highest ratios of value to weight $\frac{v_i}{w_i}$, maximizing $k$ while keeping the sum of the weights of the selected items at most 1. In the offline case, this can be done trivially by sorting the items by ratio and then selecting the highest $k$ items. An online algorithm can perform at least as well by keeping a working set of the items with the highest ratio while processing each input.
 %We demonstrate that a set at least as good is found in the online case by the following algorithm.
@@ -18,12 +18,10 @@ $GREEDY$ selects the $k$ items with the highest ratios of value to weight $\frac
 \begin{algorithm}
 	\caption{online $GREEDY$}
 	$S \leftarrow \emptyset$\;
-	\ForEach{item $e_i$, in order of arrival}{
-		\If{$w_i\le1$}{
-			$S \leftarrow S \cup \{e_i\}$\;
-			\While{$\sum_{e_j \in S} w_j > 1$}{
-				Remove the item from $S$ with the smallest ratio
-			}
+	\ForEach{item $e_i$ with $w_i\le1$, in order of arrival}{
+		$S \leftarrow S \cup \{e_i\}$\;
+		\While{$\sum_{e_j \in S} w_j > 1$}{
+			Remove the item from $S$ with the smallest ratio\;
 		}
 	}
 \end{algorithm}
@@ -38,9 +36,9 @@ Neither of these algorithms alone are competitive. Consider an input sequence $\
 	Running $MAX$ and $GREEDY$ uniformly at random is a 2-competitive algorithm.
 \end{theorem}
 \begin{proof}
-	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by $GREEDY$, $MAX$, and an optimal solution, respectively. Consider the fractional knapsack solution to the offline version, that is, when we are allowed to take fractional parts of items. Then a greedy solution is optimal: Sort by ratio and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. In the fractional knapsack problem, we have relaxed the integrality constraint, so the fractional solution is not worse than the integral solution.
+	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by $GREEDY$, $MAX$, and an optimal solution, respectively. Consider the fractional knapsack solution to the offline version, that is, when we are allowed to take fractional parts of items. Then a greedy solution is optimal: Sort by ratio and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. The fractional knapsack problem is a relaxation of the integral knapsack problem, so the fractional solution is not worse than the integral solution.
 	
-	Now the offline $GREEDY$ algorithm by definition selects all of these except the fractional item (if one exists). Thus the online $GREEDY$ algorithm also selects all except the fractional item. Finally the $MAX$ algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is $\frac{2\cdot OPT(T)}{GREEDY(T)+MAX(T)} \le 2$.
+	Now the offline $GREEDY$ algorithm by definition selects all the items in the fractional solution except the final fractional item (if one exists). Thus the online $GREEDY$ algorithm also selects all except the fractional item. Finally the $MAX$ algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is $\frac{2\cdot OPT(T)}{GREEDY(T)+MAX(T)} \le 2$.
 \end{proof}
 
 \subsection{Lower Bound}
@@ -55,7 +53,10 @@ This is reminiscent of the \emph{ski rental problem}, one of the most well-under
 Finally, we want the expected value of removing $e_0$ and selecting all following items to be close to 1 at any given point. A simple way to achieve this is to let the remaining items have a constant value and have the $p_k$ form an exponential distribution.
 
 This leads us towards the input sequence given by Han et al. \cite{han}:
-\[(1,1),\ (1/n^2,1/n),\ (1/n^2,1/n),\ldots\ (1/n^2,1/n)\]
+\begin{equation}
+	\label{eq:knapsack_dist}
+	(1,1),\ \underbrace{(1/n^2,1/n),\ (1/n^2,1/n),\ldots\ (1/n^2,1/n)}_{k \text{ terms}}
+\end{equation}
 for a given value of $n$ and where there are $k+1$ items with probability $p_k = \frac{1-e^{-1/n}}{1-e^{-n}} \cdot e^{-(k-1)/n}$ for $k=1,2,\ldots,n^2$.
 
 \begin{theorem}
@@ -63,7 +64,7 @@ for a given value of $n$ and where there are $k+1$ items with probability $p_k =
 	No online algorithm has competitive ratio less than $1+1/e$ for the removable online knapsack problem.
 \end{theorem}
 \begin{proof}
-	We apply Yao's Principle on the input distribution above. The optimal strategy with full information is to keep $e_0$ for $k\le n$ and remove $e_0$ immediately otherwise. This leads us to the expected optimal value
+	We apply Yao's Principle on the input distribution \eqref{eq:knapsack_dist}. The optimal strategy with full information is to keep $e_0$ for $k\le n$ and remove $e_0$ immediately otherwise. This leads us to the expected optimal value
 	\[ \sum_{i=1}^n 1\cdot p_i + \sum_{i=n+1}^{n^2} \frac{i}{n}\cdot p_i = \frac{1-e^{-1/n}}{1-e^{-n}} \left( \sum_{i=1}^n e^{-(i-1)/n} + \frac{1}{n} \sum_{i=n+1}^{n^2} i\cdot e^{-(i-1)/n} \right) \]
 	which has value $1+1/e$ as $n \rightarrow \infty$.
 
