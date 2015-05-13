@@ -66,7 +66,7 @@ To use Yao's principle on this input distribution, we need to show that the expe
 For a given $X_i$, a new color is chosen (assuming First-Fit) on each $a_m$ and each $b_m$, since the blocks are given in order. A probability distribution $P$ can be defined over all $X_i$, where $p_i$ is the probability that $X_i$ is chosen as input, as follows:
 
 \[p_i = \begin{cases} \frac{2^k}{2^k-1}\cdot\frac{i}{2^i} &\mbox{if } i < k \\
-\frac{k}{2^k-1} & \mbox{if } i \equiv k 
+\frac{k}{2^k-1} & \mbox{if } i = k 
  \end{cases}\]
 
 The expected competitive ratio of First-Fit on this distribution then becomes $\sum_{i=1}^k p_i\frac{2i-1}{i}$, since First-Fit uses $2i-1$ colors, whereas the optimal number of colors that can be used is exactly $i$.
