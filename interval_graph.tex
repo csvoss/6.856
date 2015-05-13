@@ -3,13 +3,14 @@ This section studies the online problem of coloring co-interval graphs as descri
 This problem is set up as follows:
 
 \begin{description}
-	\item[Input] A set of intervals on the real line in arbitrary order
-	\item[Output] A color matched to each interval satisfying the condition that any interval $I_k$ must be assigned a color that's different from the color assigned to any $I_j$ such that $j < k$ and intervals $j$ and $k$ don't intersect.
+	\item[Input] A set of intervals on the real line in arbitrary order.
+	\item[Output] A color matched to each interval, such that $color(I_k) \neq color(I_j)$ when intervals $I_k$ and $I_j$ are such that $j < k$ and intervals $I_j$ and $I_k$ don't intersect.
 \end{description}
 
-Since this is an online problem, the algorithm must assign colors as it goes, without knowing the complete set of intervals. That is, the algorithm will only receive information about $I_{j+1}$ after it has assigned colors to all intervals $I_k$ where $k \leq j$.
+Since this is an online problem, the algorithm must assign colors as it goes, without knowing the complete set of intervals. That is, the algorithm will only receive information about $I_{j+1}$ after it has assigned colors to all intervals $I_k$ where $j \geq k$.
 
-First, we present the First-Fit approximation algorithm to solve this problem, which has a competitive ratio of at most 2. Then, using Yao's principle, we can prove that there exist no randomized algorithm that achieves a competitive ratio that's better than $\frac{3}{2}$.
+First, we present the First-Fit approximation algorithm, which solves this problem with a competitive ratio of at most 2. Then, using Yao's principle, we can prove that there exist no randomized algorithm that achieves a competitive ratio that's better than $\frac{3}{2}$.
+
 \subsection{Upper Bound}
 To solve the problem of assigning intervals different colors, the set of intervals is first constructed as a graph. That is, the input to our problem becomes:
 
@@ -20,21 +21,25 @@ To solve the problem of assigning intervals different colors, the set of interva
 	\end{tabular}
 \end{center}
 
-Note that any vertices that aren't connected by an edge can be colored in the same color since they overlap. Thus, in such a graph, our problem is reduced to finding the minimum number of colors such that no connected vertices are the same color.
+Note that any two vertices that aren't connected by an edge can be colored in the same color, since those vertices represent overlapping intervals. Thus, in such a graph, our problem is reduced to finding the minimum number of colors such that no connected vertices are the same color.
 
-The First-Fit algorithm is the simplest solution to this problem and does the following:
-\begin{verbatim}
-L = ordered list of colors
-for a new vertex v:
-    assign v the first color in L that doesn't cause a collision
-\end{verbatim}
-Essentially, the algorithm maintains a list of colors that can be used. These colors are sorted in an arbitrary order. The first vertex is simply assigned the smallest color. For any future vertex $v$, the algorithm scans the list. We can define a collision between vertices $u$ and $v$ at color $k$ if $u$ is colored $k$ and $v$ is connected to $u$ by an edge in $E$. If a collision occurs where $L[i] = k$, then we increment $i$. We assign $v$ the color at $L[j]$ where $j$ doesn't cause any collisions and try to minimize $j$.
+The First-Fit algorithm, as follows, is the simplest solution to this problem.
+
+\begin{algorithm}
+\caption{First-Fit algorithm}
+$L \leftarrow \text{ordered list of colors}$
+\ForEach{new vertex v} {
+  assign v the first color in L that doesn't cause a collision
+}
+\end{algorithm}
+
+Essentially, the algorithm maintains a list of colors that can be used. These colors are sorted in an arbitrary order. The first vertex is simply assigned the smallest color. For any future vertex $v$, the algorithm scans its list of colors. A \emph{collision} between vertices $u$ and $v$ at color $k$ occurs if $u$ is colored $k$ and $v$ is connected to $u$ by an edge in $E$. If $k = L[i]$ and a collision occurs, then we increment $i$. We assign $v$ the color at $L[j]$, where $j$ doesn't cause any collisions, and we try to minimize $j$.
 
 It has been shown by Gyarfas and Lehel \cite{gyarfas} that First-Fit uses at most $2\omega+1$ colors on any co-chordal graph, which is a class that includes co-interval graphs. It has also been shown by Kierstead and Qin \cite{kierstead} that no online deterministic algorithm can beat the 2-competitive ratio on co-interval graphs.
 
 In the next section, we look at using randomization in co-interval graphs and lower bound the best competitive ratio that can be obtained.
 \subsection{Lower Bound}
-Yao's minimax principle proves that the expected competitive ratio on an optimal deterministic algorithm on the worst-case input is a lower bound on the expected competitive ratio of all randomized algorithms. That is, if there exists a set of inputs such that all optimal deterministic algorithms are at least $\alpha$-competitive, then $\alpha$ is the best ratio that can be obtained by using randomization.
+Yao's minimax principle proves that the expected competitive ratio of an optimal deterministic algorithm on the worst-case distribution of inputs is a lower bound on the expected competitive ratio of all randomized algorithms. That is, if there exists a set of inputs such that all optimal deterministic algorithms are at least $\alpha$-competitive, then $\alpha$ is the best ratio that can be obtained by using randomization.
 
 To define such a set of inputs, essentially, we need to find a set of intervals that satisfy the condition that any deterministic algorithm is at most $\frac{3}{2}$-competitive. The idea behind constructing such a set of intervals is that any deterministic algorithm will make the same decision on any specific interval given the same information, regardless of what the future intervals are.
 
@@ -50,13 +55,13 @@ $B_i = \begin{cases} {b_1, c_1} &\mbox{if } i = 1 \\
 {a_i, b_i, c_i} & \mbox{if } i \in [2,k) \\
  {a_k, b_k} &\mbox{if } i = k \end{cases}$ 
 
-From this set of blocks, we can choose a set of $k$ input sequences, simply by defining our input sequence $X_i$ as the concatenation of blocks $B_1$, $B_2$... $B_i$, in order. Our set of all possible inputs then becomes the set: 
+From this set of blocks, we can choose a set of $k$ input sequences, simply by defining our input sequence $X_i$ as the concatenation of blocks $B_1$, $B_2$... $B_i$, in order. Let $I$ be our set of all possible inputs:
 
 \[I = \{X_i \text{ where } i \in [1,k]\}\]
 
 It can be shown that the minimum number of colors required to color $X_i$ without any edges sharing a color is $i$.
 
-To use Yao's principle on this input distribution, we need to show that if we set up a probability distribution over all possible $X_i$ that the expected competitive ratio will be at least $\frac{3}{2}$. The optimal deterministic algorithm that we will examine per each $X_i$ input is First-Fit - as previously shown, this algorithm uses $2\omega-1$ colors on each $X_i$. In this case, the chromatic number $\omega=i$, so, the expected number of colors for a given $X_i$ is exactly $2i-1$.
+To use Yao's principle on this input distribution, we need to show that the expected competitive ratio will be at least $\frac{3}{2}$ if we set up a probability distribution over all possible $X_i$. The optimal deterministic algorithm that we will examine per each $X_i$ input is First-Fit; as previously shown, this algorithm uses $2\omega-1$ colors on each $X_i$. In this case, the chromatic number $\omega=i$, so, the expected number of colors for a given $X_i$ is exactly $2i-1$.
 
 For a given $X_i$, a new color is chosen (assuming First-Fit) on each $a_m$ and each $b_m$, since the blocks are given in order. A probability distribution $P$ can be defined over all $X_i$, where $p_i$ is the probability that $X_i$ is chosen as input, as follows:
 
@@ -64,7 +69,7 @@ For a given $X_i$, a new color is chosen (assuming First-Fit) on each $a_m$ and 
 \frac{k}{2^k-1} & \mbox{if } i \equiv k 
  \end{cases}\]
 
-The expected competitive ratio of First-Fit on this distribution then becomes $\sum_{i=1}^k p_i\frac{2i-1}{i}$ since FF uses $2i-1$ colors, while the optimal number of colors that can be used is exactly $i$.
+The expected competitive ratio of First-Fit on this distribution then becomes $\sum_{i=1}^k p_i\frac{2i-1}{i}$, since First-Fit uses $2i-1$ colors, whereas the optimal number of colors that can be used is exactly $i$.
 
 This sum becomes:
 \begin{equation*}
@@ -79,7 +84,7 @@ If no deterministic algorithm can obtain a better competitive ratio on this set 
 	No deterministic algorithm can obtain a better competitive ratio on the set of inputs $I$.
 \end{theorem}
 \begin{proof}
-To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$ where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$ since they don't intersect, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  
+To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$, where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  
 
 Given a sequence of decisions, $\langle d_1, d_2...d_{k-1} \rangle$, then we can define a deterministic algorithm FF as follows:
 
@@ -89,7 +94,7 @@ If we receive an interval of type $a$ or $b$, we behave as the online First-Fit 
 
 \begin{lemma} Among all deterministic online algorithms, FF behaves optimally and chooses the minimum number of colors for any input $I$. \end{lemma}
 \begin{proof}
-This can be shown by induction, over the minimum number of colors on an input of size $m$. 
+This can be shown by induction over the minimum number of colors on an input of size $m$. 
 %%Then, assuming that the minimum number of colors are used in an input of size $m$, then we know that all deterministic algorithms will behave the same way for a specific prefix of size $m$. We can then show that the minimum number of colors will be used on an input of size $m+1$ and the statement holds.
 \end{proof}
 
@@ -97,7 +102,7 @@ This can be shown by induction, over the minimum number of colors on an input of
 \begin{proof}
 This proof follows by induction:
 
-Define $P(m)$ as an upper bound for the competitive ratio of FF where there are $m$ 1's in our sequence of decisions $D$.  $P(0)$ holds trivially - in a sequence of all zero's, FF behaves exactly the same as First-Fit and our competitive ratio is still ~2.
+Define $P(m)$ as an upper bound for the competitive ratio of FF in the case where there are $m$ 1's in our sequence of decisions $D$.  $P(0)$ holds trivially - in a sequence of all zeros, FF behaves exactly the same as First-Fit and our competitive ratio is still \textasciitilde2.
 
 Using strong induction, we assume that P(k) is true for all $k \in [0,m-1]$.  
 
@@ -113,7 +118,7 @@ By looking at the bits where $FF_m$ would differ from $FF_{m-1}$, we can derive 
 
 \[\rho_m = \rho_{m-1} + \rho_i\left(\frac{1}{i}\right) - \sum_{j=i+1}^k \rho_i\left(\frac{1}{i}\right)\]
 
-Substituting $\rho_i = \frac{2^k}{2^k-1}\cdot\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$ and the proof follows by induction.
+Substituting $\rho_i = \frac{2^k}{2^k-1}\cdot\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i(\frac{1}{i})$.  This gives us that $\rho_m = \rho_{m-1}$, and the proof follows by induction.
 \end{proof}
 
 In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$, which shows that no deterministic algorithm has a better competitive ratio on $I$. 
