@@ -31,7 +31,7 @@ The CHSH game is played between two players and an adversary. We generalize the 
 
 The authors note that this game has not been studied before because of the simplicity of its strategies in the classical setting: by outputting $a_i=0$, the players are guaranteed to win unless the adversary happened to pick $x_i=1$. Therefore, against an adversary that always chooses $\vec{x}$ uniformly, the players can win with probability $1-2^n$.
 
-However, this game becomes more interesting when we consider worst-case bounds: if the adversary is allowed to choose $\pi$, the optimal strategy for the players becomes less trivial. The authors show that $\lim_{n \rightarrow \infty}Pr(win) = 2/3$ in both the classical case and the quantum case~\cite{ABBSSV}.
+However, this game becomes more interesting when we consider worst-case bounds: if the adversary is allowed to choose $\pi$, the optimal strategy for the players becomes less trivial. The authors show that $\lim_{n \rightarrow \infty}\Pr[win] = 2/3$ in both the classical case and the quantum case~\cite{ABBSSV}.
 
 The $n$-party AND game and the CHSH game share the same win condition, $\bigoplus \vec{a} = \bigwedge \vec{x}$. To generalize this further, we can imagine games with arbitrary win conditions. Let the \textbf{Generalized CHSH Game} be as follows.
 
@@ -44,9 +44,9 @@ The $n$-party AND game and the CHSH game share the same win condition, $\bigoplu
 %% \item{The players win if $\bigoplus \vec{a} = \bigwedge \vec{x}$. Let the indicator variable $\texttt{win}(\vec{a}|\vec{x}) = 1$ if they win, $-1$ otherwise.}
 %% \end{itemize}
 
-%% 
+%%
 
-%%  
+%%
 
 %% TODO: transition here
 
@@ -69,11 +69,12 @@ The $n$-party AND game and the CHSH game share the same win condition, $\bigoplu
 \item{The players win if some proposition~$\texttt{win}(\vec{a} \Mid \vec{x})$ is true. Let the indicator variable~$\texttt{win}(\vec{a} \Mid \vec{x}) = 1$ if they win and $-1$ otherwise.}
 \end{itemize}
 
-For any game~$G$, define $\omega^\pi(G)$ as $Pr(\textrm{Win}) - Pr(\textrm{Lose})$ when $\pi$ is a probability distribution according to which the adversary chooses $\vec{x}$. Let $\omega(G)$ be the worst case $\omega^\pi(G)$: the minimum value of $\omega^\pi(G)$ over distributions $\pi$ that the adversary can choose from. Let $\omega_q$ and $\omega_c$ be $\omega$ in the quantum and classical cases, respectively. We defined the indicator variable $\texttt{win}(\vec{a}\Mid\vec{x})$ such that $Pr(\textrm{Win}) - Pr(\textrm{Lose}) = \Expected[ \texttt{win}(\vec{a}\Mid\vec{x}) ]$. Therefore, we can more formally define $\omega(G)$ and $\omega^\pi(G)$ as follows:
+For any game~$G$, define $\omega^\pi(G)$ as $\Pr[\textrm{Win}] - \Pr[\textrm{Lose}]$ when $\pi$ is a probability distribution according to which the adversary chooses $\vec{x}$. Let $\omega(G)$ be the worst case $\omega^\pi(G)$: the minimum value of $\omega^\pi(G)$ over distributions $\pi$ that the adversary can choose from. Let $\omega_q$ and $\omega_c$ be $\omega$ in the quantum and classical cases, respectively. We defined the indicator variable $\texttt{win}(\vec{a}\Mid\vec{x})$ such that $\Pr[\textrm{Win}] - \Pr[\textrm{Lose}] = \Expected[ \texttt{win}(\vec{a}\Mid\vec{x}) ]$. Therefore, we can more formally define $\omega(G)$ and $\omega^\pi(G)$ as follows:
 
-$$\omega^\pi(G) \equiv \max_{\vec{a}} \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}\Mid\vec{x})$$
-
-$$\omega(G) \equiv \max_{\vec{a}} \min_\pi \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}\Mid\vec{x}).$$
+\begin{align*}
+	\omega^\pi(G) &\equiv \max_{\vec{a}} \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}\Mid\vec{x}) \\
+	\omega(G) &\equiv \max_{\vec{a}} \min_\pi \Expected_{\vec{x} \in \pi} \texttt{win}(\vec{a}\Mid\vec{x}).
+\end{align*}
 
 Recent research in quantum information has considered finding games which exemplify a difference between the quantum and classical settings: seeking to maximize the ratio~$\omega_q^\pi(G) / \omega_c^\pi(G)$~\cite{ABBSSV}. Interestingly, for every possible proposition $\texttt{win}$, the separation ratio~$\omega_q(G) / \omega_c(G)$ when the adversary chooses the worst distribution~$\pi$ \emph{separately} for the classical and quantum case is at most the maximum value of $\omega_q^\pi(G) / \omega_c^\pi(G)$ over a fixed distribution~$\pi$. This proof uses Yao's minimax principle.
 
@@ -83,11 +84,11 @@ Recent research in quantum information has considered finding games which exempl
 
 \begin{proof}
 
-As with the earlier applications of Yao's minimax principle, the adversary chooses a strategy over a distribution of inputs~$\vec{x}$ to pass to the players, and the players may still use randomized algorithms as strategies. However, instead of letting the cost be \emph{running time}, the cost is the \emph{probability of winning}. The adversary attempts to minimize cost and the two players' joint algorithms attempt to maximize cost. 
+As with the earlier applications of Yao's minimax principle, the adversary chooses a strategy over a distribution of inputs~$\vec{x}$ to pass to the players, and the players may still use randomized algorithms as strategies. However, instead of letting the cost be \emph{running time}, the cost is the \emph{probability of winning}. The adversary attempts to minimize cost and the two players' joint algorithms attempt to maximize cost.
 
-Recall Yao's minimax principle, but instead of stating that any (including the best) randomized algorithm when run on its own worst-case input can perform no better than the best deterministic algorithm when run on any (including the worst) specific distribution of inputs, we will now state that the players' best randomized algorithms when run on their worst-case input can perform no better than the players' best deterministic algorithms when run on the worst distribution~$\pi$ of inputs from the adversary. 
+Recall Yao's minimax principle, but instead of stating that any (including the best) randomized algorithm when run on its own worst-case input can perform no better than the best deterministic algorithm when run on any (including the worst) specific distribution of inputs, we will now state that the players' best randomized algorithms when run on their worst-case input can perform no better than the players' best deterministic algorithms when run on the worst distribution~$\pi$ of inputs from the adversary.
 
-The players' best deterministic algorithm against the worst distribution~$\pi$ over random inputs from the adversary is $\max_{\vec{a}} \min_{\pi} \Expected_{\vec{x} \in pi} \texttt{win}(\vec{a}\Mid\vec{x})$, which is defined to be $\omega_c(G)$. The players' best randomized algorithm against the worst input is $\min_\pi \max_{\vec{a}} \Expected_{\vec{x} \in pi} \texttt{win}(\vec{a}\Mid\vec{x})$, which is $\displaystyle\min_\pi \omega^\pi_c(G)$.
+The players' best deterministic algorithm against the worst distribution~$\pi$ over random inputs from the adversary is $\max_{\vec{a}} \min_{\pi} \Expected_{\vec{x} \in pi} \texttt{win}(\vec{a}\Mid\vec{x})$, which is defined to be $\omega_c(G)$. The players' best randomized algorithm against the worst input is $\min_\pi \max_{\vec{a}} \Expected_{\vec{x} \in pi} \texttt{win}(\vec{a}\Mid\vec{x})$, which is $\min_\pi \omega^\pi_c(G)$.
 
 This gives us a bound on the worst-case win probability under classical conditions: $\omega_c(G) \geq \min_{\pi} \omega_c^\pi(G)$. Suppose $\pi$ is the probability distribution that achieves this minimum; then $\omega_q^\pi(G) \geq \omega_q(G)$, because fixing $\pi$ can only allow the players to achieve a better win probability than their worst-case $\omega_q(G)$.
 \end{proof}

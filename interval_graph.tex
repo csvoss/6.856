@@ -13,13 +13,10 @@ First, we present the \emph{FIRSTFIT} approximation algorithm, which solves this
 
 \subsection{Upper Bound}
 To solve the problem of assigning intervals different colors, the set of intervals is first constructed as a graph. That is, the input to our problem becomes:
-
-\begin{center}
-	\begin{tabular}{rl}
-		$V$ &:= Set of intervals where $v_i$ represents the $i$\textsuperscript{th} interval \\
-		$E$ &:= Set of edges where $(u,v) \in E$ iff interval $u$ and interval $v$ are disjoint
-	\end{tabular}
-\end{center}
+\begin{align*}
+	V &:= \text{Set of intervals where $v_i$ represents the $i$\textsuperscript{th} interval} \\
+		E &:= \text{Set of edges where $(u,v) \in E$ iff interval $u$ and interval $v$ are disjoint}
+\end{align*}
 
 Note that any two vertices that aren't connected by an edge can be colored in the same color, since those vertices represent overlapping intervals. Thus, in such a graph, our problem is reduced to finding the minimum number of colors such that no connected vertices are the same color.
 
@@ -44,7 +41,7 @@ Yao's minimax principle proves that the expected competitive ratio of an optimal
 To define such a set of inputs, essentially, we need to find a set of intervals that satisfy the condition that any deterministic algorithm is at most $3/2$-competitive. The idea behind constructing such a set of intervals is that any deterministic algorithm will make the same decision on any specific interval given the same information, regardless of what the future intervals are.
 
 \subsubsection{Problem Construction}
-For $1\le i\le k$ for a given value of $k$, the intervals defined by Zarrabi-Zadeh \cite{zarrabi} are: 
+For $1\le i\le k$ for a given value of $k$, the intervals defined by Zarrabi-Zadeh \cite{zarrabi} are:
 \begin{align*}
 	a_i &= [3i-3, 3i-2], \\
 	b_i &= [3i+1, 3i+2],\textrm{ and} \\
@@ -53,7 +50,7 @@ For $1\le i\le k$ for a given value of $k$, the intervals defined by Zarrabi-Zad
 We can then define a block as
 $$B_i = \begin{cases} {b_1, c_1} &\mbox{if } i = 1 \\
 {a_i, b_i, c_i} & \mbox{if } i \in [2,k) \\
- {a_k, b_k} &\mbox{if } i = k. \end{cases}$$ 
+ {a_k, b_k} &\mbox{if } i = k. \end{cases}$$
 
 From this set of blocks, we can choose a set of $k$ input sequences, simply by defining our input sequence $X_i$ as the concatenation of blocks $B_1$, $B_2$, \ldots, $B_i$, in order. Let $I$ be our set of all possible inputs~$\{X_i \text{ where } i \in [1,k]\}$. It can be shown that the minimum number of colors required to color $X_i$ without any edges sharing a color is $i$.
 
@@ -62,7 +59,7 @@ To use Yao's principle on this input distribution, we need to show that the expe
 For a given $X_i$, a new color is chosen (assuming \emph{FIRSTFIT}) on each $a_m$ and each $b_m$, since the blocks are given in order. A probability distribution $P$ can be defined over all $X_i$, where $p_i$ is the probability that $X_i$ is chosen as input, as follows:
 
 \[p_i = \begin{cases} \frac{2^k}{2^k-1}\cdot\frac{i}{2^i} &\mbox{if } i < k \\
-\frac{k}{2^k-1} & \mbox{if } i = k. 
+\frac{k}{2^k-1} & \mbox{if } i = k.
  \end{cases}\]
 
 The expected competitive ratio of \emph{FIRSTFIT} on this distribution then becomes $\sum_{i=1}^k p_i\frac{2i-1}{i}$, since \emph{FIRSTFIT} uses $2i-1$ colors, whereas the optimal number of colors that can be used is exactly $i$.
@@ -72,7 +69,7 @@ This sum becomes
 \rho = \frac{3}{2} - \frac{1}{2(2^k-1)}
 \end{equation*}
 %
-where $\rho$ is the best competitive ratio that can be obtained by using \emph{FIRSTFIT} on this probability distribution. 
+where $\rho$ is the best competitive ratio that can be obtained by using \emph{FIRSTFIT} on this probability distribution.
 
 If no deterministic algorithm can obtain a better competitive ratio on this set of inputs, then this is the best that a randomized algorithm could achieve.
 \subsubsection{Deterministic Algorithm Bounds}
@@ -80,19 +77,19 @@ If no deterministic algorithm can obtain a better competitive ratio on this set 
 	No deterministic algorithm can obtain a better competitive ratio on the distribution of inputs $I$.
 \end{theorem}
 \begin{proof}
-To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$, where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.  
+To show this, we choose an arbitrary deterministic algorithm $A$. We can then define $d_i$ as the decision that $A$ makes on receiving interval $c_i$, where $d_i = 1$ iff a new color is chosen for $c_i$.  In an optimal solution, all $c_i$ can be colored the same as $b_i$, since all $b_i$ don't intersect any preceding $a_j$ or $b_j$, but intersect all previous $c_j$.
 
 Given a sequence of decisions $D = \langle d_1, d_2, \ldots, d_{k-1} \rangle$, then we can define a deterministic algorithm \emph{FF} as follows.
 
 \begin{itemize}
-\item If we receive an interval $c_j$, we check what $d_j$ is and assign a new color iff $d_j = 1$. Else, we assign it the same color as $b_j$. 
+\item If we receive an interval $c_j$, we check what $d_j$ is and assign a new color iff $d_j = 1$. Else, we assign it the same color as $b_j$.
 
 \item If we receive an interval of type $a$ or $b$, we behave as the online \emph{FIRSTFIT} algorithm normally does.
 \end{itemize}
 
 \begin{lemma} Among all deterministic online algorithms, \emph{FF} behaves optimally and chooses the minimum number of colors for any input $I$. \end{lemma}
 \begin{proof}
-This can be shown by induction over the minimum number of colors on an input of size $m$. 
+This can be shown by induction over the minimum number of colors on an input of size $m$.
 %%Then, assuming that the minimum number of colors are used in an input of size $m$, then we know that all deterministic algorithms will behave the same way for a specific prefix of size $m$. We can then show that the minimum number of colors will be used on an input of size $m+1$ and the statement holds.
 \end{proof}
 
@@ -102,15 +99,15 @@ This proof follows by induction:
 
 Define $P(m)$ to be true if $\rho$ is an upper bound for the competitive ratio of \emph{FF} in the case where there are $m$ ones in our sequence of decisions $D$.  $P(0)$ holds trivially -- in a sequence of all zeros, \emph{FF} behaves exactly the same as \emph{FIRSTFIT} and our competitive ratio is still approximately 2.
 
-Using strong induction, we assume that $P(k)$ is true for all $k \in [0,m-1]$.  
+Using strong induction, we assume that $P(k)$ is true for all $k \in [0,m-1]$.
 
 %Then, $i$ is defined as the index of the last bit which is 1 in $D_m$, an arbitrary sequence with $m$ ones.  If we flip $D_m[i]$, we get a sequence $D_{m-1}$ with a competitive ratio at most $\rho$ (by induction).
 
-%Thus, for the first $i$ bits, the competitive ratio of $FF_m$ is the same as that of $FF_{m-1}$ for all sequences smaller than $X_i$. 
+%Thus, for the first $i$ bits, the competitive ratio of $FF_m$ is the same as that of $FF_{m-1}$ for all sequences smaller than $X_i$.
 
 %On sequence $X_i$, $FF_m$ uses one more color than $FF_{m-1}$, since it uses a new color for $c_i$.
 
-%On sequences larger than $X_i$, $FF_m$ uses one less color than $FF_{m-1}$. This is because it opens a new color for $c_i$. However, $FF_m$ colors $a_{i+1}$ like $b_i$ and $b_{i+1}$ like $c_i$. Meanwhile $FF_{m-1}$ opens new colors for $a_{i+1}$ and $b_{i+1}$ since that's what \emph{FIRSTFIT} does. 
+%On sequences larger than $X_i$, $FF_m$ uses one less color than $FF_{m-1}$. This is because it opens a new color for $c_i$. However, $FF_m$ colors $a_{i+1}$ like $b_i$ and $b_{i+1}$ like $c_i$. Meanwhile $FF_{m-1}$ opens new colors for $a_{i+1}$ and $b_{i+1}$ since that's what \emph{FIRSTFIT} does.
 
 By looking at the bits of $D$ where $FF$ with $m$ ones would differ from $FF$ with $m-1$ ones, we can derive the formula
 
@@ -119,7 +116,7 @@ By looking at the bits of $D$ where $FF$ with $m$ ones would differ from $FF$ wi
 Substituting $\rho_i = \frac{2^k}{2^k-1}\cdot\frac{i}{2^i}$ gives us that the last term sums to exactly $\rho_i \cdot 1/i$.  This gives us that $\rho_m = \rho_{m-1}$, and the proof follows by induction.
 \end{proof}
 
-In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$, which shows that no deterministic algorithm has a better competitive ratio on $I$. 
+In turn, this implies that the expected competitive ratio of any deterministic algorithm is at most $\rho$, which shows that no deterministic algorithm has a better competitive ratio on $I$.
 \end{proof}
 
 By choosing $k$ arbitrarily large, $\rho$ tends to $3/2$. As we have now bounded the behavior of any deterministic algorithm on the distribution of inputs $I$, Yao's principle thus gives us a lower bound of $3/2$ as the competitive ratio on any randomized algorithm.

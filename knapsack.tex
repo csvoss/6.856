@@ -36,7 +36,7 @@ Neither \emph{MAX} nor \emph{GREEDY} alone is competitive. Consider an input seq
 \end{theorem}
 \begin{proof}
 	For a given input sequence $T$, let $GREEDY(T)$, $MAX(T)$, and $OPT(T)$ be the values of the sets returned by \emph{GREEDY}, \emph{MAX}, and an optimal solution, respectively. Consider the \emph{fractional} knapsack solution to the offline problem with input sequence $T$: that is, when we are allowed to take fractional parts of items. Then, a greedy solution is optimal: Sort by ratio, and take the highest ratio items until the knapsack is full, potentially taking only part of the last item in the knapsack. The fractional knapsack problem is a relaxation of the integral knapsack problem, so the fractional solution is not worse than the integral solution.
-	
+
 	Now the offline \emph{GREEDY} algorithm by definition selects all the items in the fractional solution except the final fractional item (if one exists). Thus the online \emph{GREEDY} algorithm also selects all except the fractional item. Finally, the \emph{MAX} algorithm selects an item with value at least that of the fractional item, so $GREEDY(T)+MAX(T) \ge OPT(T)$. Thus the competitive ratio is
 \begin{equation*}
 \frac{2\cdot OPT(T)}{GREEDY(T)+MAX(T)} \le 2.\qedhere
