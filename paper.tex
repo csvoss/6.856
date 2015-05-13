@@ -1,4 +1,7 @@
 \documentclass[12pt]{article}
+\usepackage{etex}
+\usepackage{fixltx2e}
+
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb, amsthm, amsfonts}
 \usepackage{mathdots}
@@ -39,7 +42,9 @@
 \usepackage{braket}
 \usepackage{dsfont}
 \usepackage{fancyvrb}
-\usepackage[T1]{fontenc}
+
+\usepackage{microtype}
+\lastlinefit=1000
 
 \DontPrintSemicolon
 
@@ -47,9 +52,9 @@
 \newtheorem{lemma}[theorem]{Lemma}
 
 \title{A Survey of Yao's Minimax Principle} % can be changed to whatever
-\author{Brian Shimanuki \footnote{bshimanuki@mit.edu} \\
-Mayuri Sridhar \footnote{mayuri@mit.edu} \\
-Chelsea Voss \footnote{csvoss@mit.edu}}
+\author{Brian Shimanuki \\ \texttt{bshimanuki@mit.edu} \and
+Mayuri Sridhar \\ \texttt{mayuri@mit.edu} \and 
+Chelsea Voss \\ \texttt{csvoss@mit.edu}}
 
 \begin{document}
 
